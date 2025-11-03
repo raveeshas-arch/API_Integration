@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react"
-import { DataTable } from "../app/users/data-table"
+import { DataTable } from "../customUi/data-table"
 import { createManualColumns } from "./manual-columns"
 import { ManualUser } from "../../types/ManualUser"
 import Form from "./Form"
 import { UserDetailsDialog } from "./UserDetailsDialog"
 import toast from 'react-hot-toast'
-
 const ManualTable = () => {
   const [manualUsers, setManualUsers] = useState<ManualUser[]>([])
   const [selectedUser, setSelectedUser] = useState<ManualUser | null>(null)
