@@ -1,4 +1,5 @@
 export const ROUTES = {
+  DASHBOARD: '/',
   MANUAL: '/manual',
   API: '/api',
 } as const;

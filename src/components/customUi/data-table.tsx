@@ -70,8 +70,8 @@ const [rowSelection, setRowSelection] = React.useState({})
   })
 
   return (
-    <div className="w-full max-w-[1600px] mx-auto">
-         <div className="flex gap-5 items-center py-4">
+    <div className="w-full">
+         <div className="flex flex-col sm:flex-row gap-2 sm:gap-5 items-start sm:items-center py-4">
         {table.getColumn("email") && (
           <SearchBox
             placeholder="Filter emails..."
@@ -129,13 +129,13 @@ const [rowSelection, setRowSelection] = React.useState({})
         </DropdownMenu>
       </div>
     <div className="w-full overflow-x-auto rounded-md border">
-      <Table className="min-w-full">
+      <Table className="w-full">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id} className="px-6 py-4">
+                  <TableHead key={header.id} className="px-2 sm:px-4 py-2 sm:py-4 text-xs sm:text-sm">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -156,7 +156,7 @@ const [rowSelection, setRowSelection] = React.useState({})
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="px-6 py-4">
+                  <TableCell key={cell.id} className="px-2 sm:px-4 py-2 sm:py-4 text-xs sm:text-sm">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

@@ -21,6 +21,9 @@ const ManualTable = () => {
     const updatedUsers = [user, ...manualUsers]
     setManualUsers(updatedUsers)
     localStorage.setItem('manualUsers', JSON.stringify(updatedUsers))
+    
+    // Dispatch custom event to notify other components
+    window.dispatchEvent(new CustomEvent('manualUsersUpdated'))
   }
 
   const handleDeleteUser = (userId: number) => {
@@ -44,8 +47,8 @@ const ManualTable = () => {
   }
 
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-4">
+    <div className="p-2 sm:p-4 lg:p-6">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
         <Form onAddUser={handleAddUser} />
       </div>
       <DataTable 
