@@ -9,7 +9,7 @@ export function RecentEnrollments() {
   const users = useManualUserStore((state) => state.users)
   const navigate = useNavigate()
 
-  // Get the last 5 students with courses
+  
   const recentStudents = users
     .filter(user => user.fullName && user.course)
     .slice(0, 5)
