@@ -1,17 +1,32 @@
 import { DataTable } from "../components/customUi/data-table";
 import { createProductColumns } from "@/components/app/products/columns";
 import { ProductDetailsDialog } from "@/components/app/products/ProductDetailsDialog";
-import { useProductsList } from "@/hooks/useUser";
-import { useState } from "react";
+import { fetchProductsList } from "@/apis/user";
+import { useState, useEffect } from "react";
 import { Product } from "@/types/Product";
 import { MESSAGES } from "@/constants";
+import { LoaderOne } from "@/components/ui/loader";
 
 const API = () => {
-  const { data: products = [], isLoading: productsLoading, error: productsError } = useProductsList();
+  const [products, setProducts] = useState<Product[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
 
-  console.log('API Debug:', { products, productsLoading, productsError, productsLength: products.length });
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        const data = await fetchProductsList();
+        setProducts(data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    loadProducts();
+  }, []);
 
   const handleViewProduct = (product: Product) => {
     setSelectedProduct(product);
@@ -22,16 +37,19 @@ const API = () => {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">API Products</h1>
       
-      {productsLoading && <div>{MESSAGES.LOADING}</div>}
-      {productsError && <div>{MESSAGES.ERROR}: {productsError.message}</div>}
-      {!productsLoading && !productsError && products.length > 0 && (
+      {isLoading && (
+        <div className="flex items-center justify-center p-8">
+          <LoaderOne />
+        </div>
+      )}
+      
+      {error && <div className="text-red-500 mt-4">{MESSAGES.ERROR}: {error}</div>}
+      
+      {!isLoading && !error && products.length > 0 && (
         <DataTable 
           columns={createProductColumns({ onViewProduct: handleViewProduct })} 
           data={products} 
         />
-      )}
-      {!productsLoading && !productsError && products.length === 0 && (
-        <div>No products found</div>
       )}
       
       <ProductDetailsDialog 

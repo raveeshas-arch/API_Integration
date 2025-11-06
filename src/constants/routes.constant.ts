@@ -12,10 +12,12 @@ export const QUERY_KEYS = {
 
 // Messages
 export const MESSAGES = {
-  LOADING: 'Loading...',
   USER_ADDED: 'User added successfully!',
   USER_DELETED: 'User deleted successfully!',
   USER_UPDATED: 'User updated successfully!',
   ERROR: 'Something went wrong',
 } as const;
+
+// Loading Component
+export { LoaderOne as LOADING_COMPONENT } from '../components/ui/loader';
 

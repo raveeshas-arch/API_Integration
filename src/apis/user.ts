@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://dummyjson.com";
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 
 const apiCall = async (endpoint: string) => {
@@ -15,6 +15,11 @@ const apiCall = async (endpoint: string) => {
   }
 };
 
+export const fetchProductsList = async () => {
+  await new Promise(resolve => setTimeout(resolve, 900));
+  return apiCall("/products").then(data => data.products);
+};
+
 export const fetchProducts = () => apiCall("/products");
-export const fetchProductsList = () => apiCall("/products").then(data => data.products);
+
 export const fetchProductsCount = () => apiCall("/products").then(data => data.total || 0);
