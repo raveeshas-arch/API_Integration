@@ -93,7 +93,7 @@ const Form = ({ onAddUser }: FormProps) => {
     },
   })
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     const newUser: ManualUser = {
       id: Date.now(),
       fullName: data.fullName,
@@ -104,10 +104,29 @@ const Form = ({ onAddUser }: FormProps) => {
       birthDate: data.birthDate ? format(data.birthDate, "yyyy-MM-dd") : "",
       course: data.course,
     }
-    onAddUser(newUser)
-    toast.success(MESSAGES.USER_ADDED)
-    form.reset()
-    setOpen(false)
+
+    try {
+      // Save to database
+      const response = await fetch('http://localhost:5000/api/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newUser)
+      })
+      
+      if (response.ok) {
+        onAddUser(newUser);
+        toast.success(MESSAGES.USER_ADDED);
+        form.reset();
+        setOpen(false);
+      } else {
+        toast.error('Failed to save user');
+      }
+    } catch (error) {
+      toast.error('Error saving user');
+      console.error('Error:', error);
+    }
   }
 
 
