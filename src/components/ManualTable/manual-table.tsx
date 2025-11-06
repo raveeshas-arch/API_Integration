@@ -6,6 +6,7 @@ import Form from "./Form"
 import { UserDetailsDialog } from "./UserDetailsDialog"
 import toast from 'react-hot-toast'
 import { useManualUserStore } from '../../stores/manualUserStore'
+import { MESSAGES } from '../../constants'
 
 const ManualTable = () => {
   const { users: manualUsers, addUser, deleteUser, updateUser } = useManualUserStore()
@@ -18,7 +19,7 @@ const ManualTable = () => {
 
   const handleDeleteUser = (userId: number) => {
     deleteUser(userId)
-    toast.success(`User deleted successfully!`)
+    toast.success(MESSAGES.USER_DELETED)
   }
 
   const handleViewUser = (user: ManualUser) => {

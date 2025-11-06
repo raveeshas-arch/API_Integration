@@ -15,4 +15,6 @@ const apiCall = async (endpoint: string) => {
   }
 };
 
-export const fetchProducts = () => apiCall("/products").then(data => data.products);
+export const fetchProducts = () => apiCall("/products");
+export const fetchProductsList = () => apiCall("/products").then(data => data.products);
+export const fetchProductsCount = () => apiCall("/products").then(data => data.total || 0);

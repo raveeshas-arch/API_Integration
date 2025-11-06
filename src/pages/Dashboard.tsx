@@ -1,18 +1,21 @@
-import { useEffect, useState } from 'react'
-import { Users, Database, BarChart3, BookOpen } from 'lucide-react'
+import { Users, Database,  BookOpen } from 'lucide-react'
 import { CourseBreakdownChart } from '../components/dashboard/CourseBreakdownChart'
 import { StatCard } from '../components/dashboard/StatCard'
 import { RecentEnrollments } from '../components/dashboard/RecentEnrollments'
+import { useManualUserStore } from '../stores/manualUserStore'
+import { useProductsCount } from '../hooks/useUser'
 
 const Dashboard = () => {
-  const [manualUsersCount, setManualUsersCount] = useState(0)
-  const [apiProductsCount, setApiProductsCount] = useState(0)
-  const [coursesCount, setCoursesCount] = useState(0)
+  const users = useManualUserStore((state) => state.users)
+  
+  const { data: apiProductsCount = 0 } = useProductsCount()
+
+  const coursesCount = [...new Set(users.map(user => user.course).filter(Boolean))].length
 
   const statsCards = [
     {
       title: 'Total Students (Manual)',
-      value: manualUsersCount,
+      value: users.length,
       icon: Users,
       color: 'purple' as const
     },
@@ -29,24 +32,6 @@ const Dashboard = () => {
       color: 'orange' as const
     }
   ]
-
-  useEffect(() => {
-    // Get manual users from localStorage
-    const manualUsers = JSON.parse(localStorage.getItem('manualUsers') || '[]')
-    setManualUsersCount(manualUsers.length)
-
-    // Get unique courses count
-    const uniqueCourses = [...new Set(manualUsers.map((user: any) => user.course).filter(Boolean))]
-    setCoursesCount(uniqueCourses.length)
-
-    // Fetch API products count
-    fetch('https://dummyjson.com/products')
-      .then(res => res.json())
-      .then(data => setApiProductsCount(data.total || 0))
-      .catch(() => setApiProductsCount(0))
-  }, [])
-
-
   return (
     <div className="space-y-6 p-8">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

@@ -44,6 +44,7 @@ import {
 } from "@/components/ui/form"
 import { ManualUser } from "../../types/ManualUser"
 import toast from 'react-hot-toast'
+import { MESSAGES } from '../../constants'
 
 const formFields = [
   { name: "fullName", label: "Full Name", type: "text" },
@@ -123,7 +124,7 @@ export function EditUser({ user, onUpdateUser }: EditUserProps) {
       course: data.course,
     }
     onUpdateUser?.(updatedUser)
-    toast.success("User updated successfully!")
+    toast.success(MESSAGES.USER_UPDATED)
     setOpen(false)
   }
 

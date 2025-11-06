@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router'
-import { ROUTES } from '../../constants/routes.constant'
+import { ROUTES } from '../../constants'
 import { Home, Users, Database, Settings, LogOut, Menu } from 'lucide-react'
 import { Button } from '../ui/button'
 import { useState } from 'react'
@@ -11,7 +11,7 @@ interface LayoutProps {
 const navItems = [
   { path: ROUTES.DASHBOARD, label: 'Dashboard', icon: Home },
   { path: ROUTES.MANUAL, label: 'Manual', icon: Users },
-  { path: ROUTES.API, label: 'API Users', icon: Database },
+  { path: ROUTES.API, label: 'API Products', icon: Database },
 ]
 
 const getPageTitle = (pathname: string) => {

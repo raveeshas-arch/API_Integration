@@ -1,12 +1,13 @@
 import { DataTable } from "../components/customUi/data-table";
 import { createProductColumns } from "@/components/app/products/columns";
 import { ProductDetailsDialog } from "@/components/app/products/ProductDetailsDialog";
-import { useProducts } from "@/hooks/useUser";
+import { useProductsList } from "@/hooks/useUser";
 import { useState } from "react";
 import { Product } from "@/types/Product";
+import { MESSAGES } from "@/constants";
 
 const API = () => {
-  const { data: products = [], isLoading: productsLoading, error: productsError } = useProducts();
+  const { data: products = [], isLoading: productsLoading, error: productsError } = useProductsList();
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [viewDialogOpen, setViewDialogOpen] = useState(false);
 
@@ -21,8 +22,8 @@ const API = () => {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">API Products</h1>
       
-      {productsLoading && <div>Loading products...</div>}
-      {productsError && <div>Error: {productsError.message}</div>}
+      {productsLoading && <div>{MESSAGES.LOADING}</div>}
+      {productsError && <div>{MESSAGES.ERROR}: {productsError.message}</div>}
       {!productsLoading && !productsError && products.length > 0 && (
         <DataTable 
           columns={createProductColumns({ onViewProduct: handleViewProduct })} 

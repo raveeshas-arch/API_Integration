@@ -40,8 +40,9 @@ import {
 import { ManualUser } from "../../types/ManualUser"
 import { useState } from "react"
 import toast from 'react-hot-toast'
+import { MESSAGES } from '../../constants'
 
-// Form field definitions
+
 const formFields = [
   { name: "fullName", label: "Full Name", type: "text" },
   { name: "age", label: "Age", type: "number" },
@@ -104,7 +105,7 @@ const Form = ({ onAddUser }: FormProps) => {
       course: data.course,
     }
     onAddUser(newUser)
-    toast.success("User added successfully!")
+    toast.success(MESSAGES.USER_ADDED)
     form.reset()
     setOpen(false)
   }

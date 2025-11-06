@@ -19,7 +19,3 @@ export const MESSAGES = {
   ERROR: 'Something went wrong',
 } as const;
 
-// API URLs
-export const API_URLS = {
-  USERS: 'https://dummyjson.com/users',
-} as const;
