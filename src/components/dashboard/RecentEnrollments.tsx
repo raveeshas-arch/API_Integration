@@ -1,58 +1,19 @@
-import { useEffect, useState } from 'react'
 import { UserCheck, UserPlus, Users } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Button } from '../ui/button'
 import { useNavigate } from 'react-router'
-import { ROUTES } from '../../constants/routes.constant'
-
-interface Student {
-  name: string
-  course: string
-}
+import { ROUTES } from '../../constants'
+import { useManualUserStore } from '../../stores/manualUserStore'
 
 export function RecentEnrollments() {
-  const [recentStudents, setRecentStudents] = useState<Student[]>([])
+  const users = useManualUserStore((state) => state.users)
   const navigate = useNavigate()
 
-  const updateRecentStudents = () => {
-    const manualUsers = JSON.parse(localStorage.getItem('manualUsers') || '[]')
-    console.log('Manual users from localStorage:', manualUsers)
-    
-    // Get the last 5 students with courses
-    const studentsWithCourses = manualUsers
-      .filter((user: any) => user.fullName && user.course)
-      .map((user: any) => ({ name: user.fullName, course: user.course }))
-      .slice(-5)
-      .reverse()
-    
-    console.log('Students with courses:', studentsWithCourses)
-    setRecentStudents(studentsWithCourses)
-  }
-
-  useEffect(() => {
-    // Initial load
-    updateRecentStudents()
-
-    // Listen for storage changes
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'manualUsers') {
-        updateRecentStudents()
-      }
-    }
-
-    // Listen for custom events (when adding users from same tab)
-    const handleManualUsersUpdate = () => {
-      updateRecentStudents()
-    }
-
-    window.addEventListener('storage', handleStorageChange)
-    window.addEventListener('manualUsersUpdated', handleManualUsersUpdate)
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange)
-      window.removeEventListener('manualUsersUpdated', handleManualUsersUpdate)
-    }
-  }, [])
+  // Get the last 5 students with courses
+  const recentStudents = users
+    .filter(user => user.fullName && user.course)
+    .slice(0, 5)
+    .map(user => ({ name: user.fullName, course: user.course }))
 
   return (
     <Card>

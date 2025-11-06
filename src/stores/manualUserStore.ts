@@ -13,7 +13,9 @@ export const useManualUserStore = create<ManualUserStore>()(
   persist(
     (set) => ({
       users: [],
-      addUser: (user: ManualUser) => set((state: ManualUserStore) => ({ users: [user, ...state.users] })),
+      addUser: (user: ManualUser) => set((state: ManualUserStore) => ({ 
+        users: [{ ...user, id: user.id || Date.now() }, ...state.users] 
+      })),
       deleteUser: (userId: number) => set((state: ManualUserStore) => ({ 
         users: state.users.filter((user: ManualUser) => user.id !== userId) 
       })),
