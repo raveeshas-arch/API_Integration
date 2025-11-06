@@ -32,7 +32,7 @@ interface DetailsProps {
   title: string
   description: string
   sections: SectionConfig[]
-  imageKey?: string
+  // imageKey?: string
 }
 
 const getNestedValue = (obj: any, path: string) => {
@@ -46,7 +46,7 @@ export function Details({
   title, 
   description, 
   sections, 
-  imageKey 
+  // imageKey 
 }: DetailsProps) {
   if (!data) return null
 
@@ -60,15 +60,15 @@ export function Details({
           </DialogDescription>
         </DialogHeader>
         <div className="space-y-6">
-          {imageKey && (
+          {/* {imageKey && (
             <div className="flex justify-center">
               <img 
-                src={getNestedValue(data, imageKey)} 
+                src={getNestedValue(data, Key)} 
                 alt={title}
                 className="w-32 h-32 object-cover rounded-lg"
               />
             </div>
-          )}
+          )} */}
           
           {sections.map((section, sectionIndex) => (
             <div key={section.title}>

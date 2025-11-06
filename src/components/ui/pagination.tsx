@@ -18,7 +18,7 @@ export function Pagination<TData>({ table }: PaginationProps<TData>) {
         {table.getFilteredSelectedRowModel().rows.length} of{" "}
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
-      <div className="flex items-center space-x-6 lg:space-x-8">
+      <div className="flex items-center space-x-6">
         <div className="flex items-center space-x-2">
           <p className="text-sm font-medium">Rows per page</p>
           <select
@@ -28,7 +28,7 @@ export function Pagination<TData>({ table }: PaginationProps<TData>) {
             }}
             className="h-8 w-[70px] rounded border border-input bg-background px-3 py-1 text-sm"
           >
-            {[10, 20, 30, 50, 100].map((pageSize) => (
+            {[5,10, 20, 30, 50, 100].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 {pageSize}
               </option>
@@ -42,7 +42,7 @@ export function Pagination<TData>({ table }: PaginationProps<TData>) {
         <div className="flex items-center space-x-2">
           <Button
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            className="h-8 w-8 p-0"
             onClick={() => table.setPageIndex(0)}
             disabled={!table.getCanPreviousPage()}
           >
@@ -69,7 +69,7 @@ export function Pagination<TData>({ table }: PaginationProps<TData>) {
           </Button>
           <Button
             variant="outline"
-            className="hidden h-8 w-8 p-0 lg:flex"
+            className="h-8 w-8 p-0"
             onClick={() => table.setPageIndex(table.getPageCount() - 1)}
             disabled={!table.getCanNextPage()}
           >

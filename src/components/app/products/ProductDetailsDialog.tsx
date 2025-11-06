@@ -27,7 +27,7 @@ const productSections = [
   {
     title: "Rating",
     fields: [
-      { label: "Rating", key: "rating", suffix: " ⭐" },
+      { label: "Rating", key: "rating",  },
     ]
   }
 ]
@@ -41,7 +41,7 @@ export function ProductDetailsDialog({ product, open, onOpenChange }: ProductDet
       title={product?.title || "Product Details"}
       description="Complete product information"
       sections={productSections}
-      imageKey="thumbnail"
+      // imageKey="thumbnail"
     />
   )
 }

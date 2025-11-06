@@ -40,17 +40,17 @@ export const createProductColumns = (props?: ProductColumnsProps): ColumnDef<Pro
       />
     ),
   },
-  {
-    accessorKey: "thumbnail",
-    header: "Image",
-    cell: ({ row }) => (
-      <img 
-        src={row.original.thumbnail} 
-        alt={row.original.title}
-        className="w-12 h-12 object-cover rounded"
-      />
-    ),
-  },
+  // {
+  //   accessorKey: "thumbnail",
+  //   header: "Image",
+  //   cell: ({ row }) => (
+  //     <img 
+  //       src={row.original.thumbnail} 
+  //       alt={row.original.title}
+  //       className="w-12 h-12 object-cover rounded"
+  //     />
+  //   ),
+  // },
   ...columnDefinitions.map(({ key, title }) => ({
     accessorKey: key,
     header: ({ column }: any) => (

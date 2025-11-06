@@ -61,6 +61,11 @@ const [rowSelection, setRowSelection] = React.useState({})
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    initialState: {
+      pagination: {
+        pageSize: 5,
+      },
+    },
     state: {
       sorting,
       columnFilters,
@@ -128,7 +133,7 @@ const [rowSelection, setRowSelection] = React.useState({})
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-    <div className="w-full overflow-x-auto rounded-md border">
+    <div className="w-full max-h-[400px] sm:max-h-[500px] lg:max-h-[600px] overflow-auto rounded-md border">
       <Table className="w-full">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -173,7 +178,10 @@ const [rowSelection, setRowSelection] = React.useState({})
       </Table>
     </div>
 
-      <Pagination table={table} />
+      <div className="mt-4">
+        <Pagination table={table} />
+      </div>
+
     </div>
   )
 }

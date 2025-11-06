@@ -2,7 +2,7 @@ import axios from "axios";
 
 const BASE_URL = "https://dummyjson.com";
 
-// Generic API function
+
 const apiCall = async (endpoint: string) => {
   try {
     console.log('API Call:', `${BASE_URL}${endpoint}`);

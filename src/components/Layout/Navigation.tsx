@@ -84,7 +84,7 @@ export function Layout({ children }: LayoutProps) {
           <p className="text-sm text-gray-500">{subtitle}</p>
         </header>
 
-        <main className="flex-1 overflow-auto bg-gray-50 p-8">
+        <main className="flex-1 overflow-hidden bg-gray-50">
           {children}
         </main>
       </div>
