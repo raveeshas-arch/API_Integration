@@ -124,7 +124,6 @@ export function EditUser({ user, onUpdateUser }: EditUserProps) {
       course: data.course,
     }
     onUpdateUser?.(updatedUser)
-    toast.success(MESSAGES.USER_UPDATED)
     setOpen(false)
   }
 

@@ -116,7 +116,13 @@ const Form = ({ onAddUser }: FormProps) => {
       })
       
       if (response.ok) {
-        onAddUser(newUser);
+        const result = await response.json()
+        // Add the database ID to the user
+        const userWithDbId = {
+          ...newUser,
+          dbId: result.user._id
+        }
+        onAddUser(userWithDbId);
         toast.success(MESSAGES.USER_ADDED);
         form.reset();
         setOpen(false);
