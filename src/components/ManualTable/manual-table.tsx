@@ -17,18 +17,75 @@ const ManualTable = () => {
     addUser(user)
   }
 
-  const handleDeleteUser = (userId: number) => {
-    deleteUser(userId)
-    toast.success(MESSAGES.USER_DELETED)
+  const handleDeleteUser = async (userId: number) => {
+  try {
+    const user = manualUsers.find(u => u.id === userId)
+    if (!user) return
+
+    if (!user.dbId) {
+      
+      deleteUser(userId)
+      toast.success(MESSAGES.USER_DELETED)
+      return
+    }
+
+    // Delete from database using MongoDB ID
+    const response = await fetch(`http://localhost:5000/api/users/${user.dbId}`, {
+      method: 'DELETE'
+    })
+
+    if (response.ok) {
+      deleteUser(userId)
+      toast.success(MESSAGES.USER_DELETED)
+    } else {
+      toast.error('Failed to delete user from database')
+    }
+  } catch (error) {
+    console.error('Error deleting user:', error)
+    toast.error('Error deleting user')
   }
+}
 
   const handleViewUser = (user: ManualUser) => {
     setSelectedUser(user)
     setViewDialogOpen(true)
   }
 
-  const handleUpdateUser = (updatedUser: ManualUser) => {
-    updateUser(updatedUser)
+  const handleUpdateUser = async (updatedUser: ManualUser) => {
+    try {
+      if (!updatedUser.dbId) {
+        // If no dbId, just update locally
+        updateUser(updatedUser)
+        return
+      }
+
+      // Update in database using MongoDB ID
+      const response = await fetch(`http://localhost:5000/api/users/${updatedUser.dbId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          fullName: updatedUser.fullName,
+          age: updatedUser.age,
+          email: updatedUser.email,
+          phone: updatedUser.phone,
+          gender: updatedUser.gender,
+          birthDate: updatedUser.birthDate,
+          course: updatedUser.course
+        })
+      })
+
+      if (response.ok) {
+        updateUser(updatedUser)
+        toast.success('User updated successfully')
+      } else {
+        toast.error('Failed to update user in database')
+      }
+    } catch (error) {
+      console.error('Error updating user:', error)
+      toast.error('Error updating user')
+    }
   }
 
   return (
