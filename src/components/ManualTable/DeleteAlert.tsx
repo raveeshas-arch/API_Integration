@@ -17,6 +17,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { ManualUser } from "../../types/ManualUser"
+import toast from 'react-hot-toast'
+import { MESSAGES } from '../../constants'
 
 interface DeleteAlertProps {
   user: ManualUser
@@ -52,7 +54,28 @@ export function DeleteAlert({ user, onDeleteUser }: DeleteAlertProps) {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            onClick={() => onDeleteUser?.(user.id)}
+            onClick={async () => {
+              try {
+                const response = await fetch(`http://localhost:5000/api/users/${user.dbId}`, {
+                  method: 'DELETE',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  }
+                })
+
+                const result = await response.json()
+                
+                if (response.ok) {
+                  onDeleteUser?.(user.id)
+                  toast.success(result.message || MESSAGES.USER_DELETED)
+                } else {
+                  toast.error(result.error || 'Failed to delete user')
+                }
+              } catch (error) {
+                toast.error('Error deleting user')
+                console.error('Error:', error)
+              }
+            }}
             className="bg-red-600 hover:bg-red-700"
           >
             Delete

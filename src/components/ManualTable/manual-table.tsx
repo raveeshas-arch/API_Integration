@@ -4,12 +4,24 @@ import { createManualColumns } from "./manual-columns"
 import { ManualUser } from "../../types/ManualUser"
 import Form from "./Form"
 import { UserDetailsDialog } from "./UserDetailsDialog"
+import { Button } from "@/components/ui/button"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 import toast from 'react-hot-toast'
 import { useManualUserStore } from '../../stores/manualUserStore'
 import { MESSAGES } from '../../constants'
 
 const ManualTable = () => {
-  const { users: manualUsers, addUser, deleteUser, updateUser } = useManualUserStore()
+  const { users: manualUsers, addUser, deleteUser, updateUser, clearAll } = useManualUserStore()
   const [selectedUser, setSelectedUser] = useState<ManualUser | null>(null)
   const [viewDialogOpen, setViewDialogOpen] = useState(false)
 
@@ -17,34 +29,14 @@ const ManualTable = () => {
     addUser(user)
   }
 
-  const handleDeleteUser = async (userId: number) => {
-  try {
-    const user = manualUsers.find(u => u.id === userId)
-    if (!user) return
-
-    if (!user.dbId) {
-      
-      deleteUser(userId)
-      toast.success(MESSAGES.USER_DELETED)
-      return
-    }
-
-    // Delete from database using MongoDB ID
-    const response = await fetch(`http://localhost:5000/api/users/${user.dbId}`, {
-      method: 'DELETE'
-    })
-
-    if (response.ok) {
-      deleteUser(userId)
-      toast.success(MESSAGES.USER_DELETED)
-    } else {
-      toast.error('Failed to delete user from database')
-    }
-  } catch (error) {
-    console.error('Error deleting user:', error)
-    toast.error('Error deleting user')
+  const handleDeleteUser = (userId: number) => {
+    deleteUser(userId)
   }
-}
+
+  const handleDeleteAll = () => {
+    clearAll()
+    toast.success('All users deleted successfully')
+  }
 
   const handleViewUser = (user: ManualUser) => {
     setSelectedUser(user)
@@ -92,6 +84,32 @@ const ManualTable = () => {
     <div className="p-2 sm:p-4 lg:p-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
         <Form onAddUser={handleAddUser} />
+        {manualUsers.length > 0 && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive">
+                Delete All Users
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Delete All Users</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to delete all {manualUsers.length} users? This action cannot be undone.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={handleDeleteAll}
+                  className="bg-red-600 hover:bg-red-700"
+                >
+                  Delete All
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
       </div>
       <DataTable 
         columns={createManualColumns({ 

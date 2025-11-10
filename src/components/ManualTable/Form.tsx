@@ -114,20 +114,21 @@ const Form = ({ onAddUser }: FormProps) => {
         },
         body: JSON.stringify(newUser)
       })
-      
+     
+       const result = await response.json()
       if (response.ok) {
-        const result = await response.json()
+       
         // Add the database ID to the user
         const userWithDbId = {
           ...newUser,
           dbId: result.user._id
         }
         onAddUser(userWithDbId);
-        toast.success(MESSAGES.USER_ADDED);
+        toast.success(result.message || MESSAGES.USER_ADDED);
         form.reset();
         setOpen(false);
       } else {
-        toast.error('Failed to save user');
+        toast.error(result.error || 'Failed to save user');
       }
     } catch (error) {
       toast.error('Error saving user');

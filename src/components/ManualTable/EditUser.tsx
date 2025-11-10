@@ -112,20 +112,42 @@ export function EditUser({ user, onUpdateUser }: EditUserProps) {
     }
   }
 
-  const onSubmit = (data: FormData) => {
-    const updatedUser: ManualUser = {
-      ...user,
-      fullName: data.fullName,
-      age: parseInt(data.age),
-      email: data.email,
-      phone: data.phone,
-      gender: data.gender,
-      birthDate: data.birthDate ? format(data.birthDate, "yyyy-MM-dd") : "",
-      course: data.course,
-    }
-    onUpdateUser?.(updatedUser)
-    setOpen(false)
+  const onSubmit = async (data: FormData) => {
+  const updatedUser: ManualUser = {
+    ...user,
+    fullName: data.fullName,
+    age: parseInt(data.age),
+    email: data.email,
+    phone: data.phone,
+    gender: data.gender,
+    birthDate: data.birthDate ? format(data.birthDate, "yyyy-MM-dd") : "",
+    course: data.course,
   }
+
+  try {
+    const response = await fetch(`http://localhost:5000/api/users/${user.dbId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(updatedUser)
+    })
+
+    const result = await response.json()
+    
+    if (response.ok) {
+      onUpdateUser?.(updatedUser)
+      toast.success(result.message || MESSAGES.USER_UPDATED)
+      setOpen(false)
+    } else {
+      toast.error(result.error || 'Failed to update user')
+    }
+  } catch (error) {
+    toast.error('Error updating user')
+    console.error('Error:', error)
+  }
+}
+
 
   return (
     <Tooltip>
