@@ -7,6 +7,7 @@ interface ManualUserStore {
   addUser: (user: ManualUser) => void;
   deleteUser: (userId: number) => void;
   updateUser: (updatedUser: ManualUser) => void;
+  clearAll: () => void;
 }
 
 export const useManualUserStore = create<ManualUserStore>()(
@@ -23,7 +24,8 @@ export const useManualUserStore = create<ManualUserStore>()(
         users: state.users.map((user: ManualUser) => 
           user.id === updatedUser.id ? updatedUser : user
         )
-      }))
+      })),
+      clearAll: () => set(() => ({ users: [] }))
     }),
     { name: 'manual-users' }
   )
