@@ -43,41 +43,8 @@ const ManualTable = () => {
     setViewDialogOpen(true)
   }
 
-  const handleUpdateUser = async (updatedUser: ManualUser) => {
-    try {
-      if (!updatedUser.dbId) {
-        // If no dbId, just update locally
-        updateUser(updatedUser)
-        return
-      }
-
-      // Update in database using MongoDB ID
-      const response = await fetch(`http://localhost:5000/api/users/${updatedUser.dbId}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          fullName: updatedUser.fullName,
-          age: updatedUser.age,
-          email: updatedUser.email,
-          phone: updatedUser.phone,
-          gender: updatedUser.gender,
-          birthDate: updatedUser.birthDate,
-          course: updatedUser.course
-        })
-      })
-
-      if (response.ok) {
-        updateUser(updatedUser)
-        toast.success('User updated successfully')
-      } else {
-        toast.error('Failed to update user in database')
-      }
-    } catch (error) {
-      console.error('Error updating user:', error)
-      toast.error('Error updating user')
-    }
+  const handleUpdateUser = (updatedUser: ManualUser) => {
+    updateUser(updatedUser)
   }
 
   return (
