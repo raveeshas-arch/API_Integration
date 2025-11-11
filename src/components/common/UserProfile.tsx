@@ -1,4 +1,4 @@
-import { LogOut, UserRound, LogIn } from 'lucide-react';
+import { LogOut, UserRound, LogIn, ChevronDown } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,14 +12,24 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 
 const UserProfile = () => {
-  const userName = 'Raveesha';
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [userName, setUserName] = useState('Admin');
 
   useEffect(() => {
-    // Check if user is logged in 
     const token = localStorage.getItem('token');
+    const admin = localStorage.getItem('admin');
+    
     setIsLoggedIn(!!token);
+    
+    if (admin) {
+      try {
+        const adminData = JSON.parse(admin);
+        setUserName(adminData.name || 'Admin');
+      } catch (error) {
+        setUserName('Admin');
+      }
+    }
   }, []);
 
   const handleLogout = () => {
@@ -35,7 +45,11 @@ const UserProfile = () => {
   // Show Login button if not logged in
   if (!isLoggedIn) {
     return (
-      <Button variant="outline" className="font-bold bg-gray-200 hover:bg-black hover:text-white cursor-pointer" onClick={handleLogin}>
+      <Button 
+        variant="ghost" 
+        className="font-bold cursor-pointer" 
+        onClick={handleLogin}
+      >
         <LogIn className="mr-2 h-4 w-4" />
         Login
       </Button>
@@ -46,9 +60,15 @@ const UserProfile = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="font-bold bg-gray-200 hover:bg-black hover:text-white cursor-pointer flex items-center gap-2 px-3">
-          <UserRound className="h-5 w-5" />
-          <span className="hidden md:block font-medium">{userName}</span>
+        <Button 
+          variant="ghost" 
+          className="font-bold cursor-pointer flex items-center justify-between px-3"
+        >
+          <div className="flex items-center gap-2">
+            <UserRound className="h-5 w-5" />
+            <span className="font-medium">{userName}</span>
+          </div>
+          <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
 
