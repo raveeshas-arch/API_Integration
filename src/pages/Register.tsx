@@ -4,25 +4,41 @@ import toast from 'react-hot-toast'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
+import { registerAdmin } from '@/apis/admin'
+import { registerSchema, type RegisterFormData } from '@/lib/validations'
 
 const Register = () => {
     const navigate = useNavigate()
 
-    const [formData, setFormData] = React.useState({
+    const [formData, setFormData] = React.useState<RegisterFormData>({
         name: '',
         email: '',
-        password: '',
-        role: 'admin'
+        password: ''
     })
+    const [errors, setErrors] = React.useState<Partial<RegisterFormData>>({})
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        setErrors({})
         
-        if (formData.name && formData.email && formData.password && formData.role) {
-            toast.success('Account created successfully!')
+        const result = registerSchema.safeParse(formData)
+        if (!result.success) {
+            const fieldErrors: Partial<RegisterFormData> = {}
+            result.error.issues.forEach((issue) => {
+                const field = issue.path[0] as keyof RegisterFormData
+                fieldErrors[field] = issue.message
+            })
+            setErrors(fieldErrors)
+            return
+        }
+
+        try {
+            const response = await registerAdmin(formData)
+            toast.success(response.message || 'Account created successfully!')
             navigate('/login')
-        } else {
-            toast.error('Please fill in all fields')
+        } catch (error: any) {
+            const errorMessage = error.response?.data?.message || 'Registration failed'
+            toast.error(errorMessage)
         }
     }
 
@@ -52,8 +68,8 @@ const Register = () => {
                             placeholder="Enter your full name"
                             value={formData.name}
                             onChange={handleChange}
-                            required
                         />
+                        {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                     </div>
                     
                     <div className="space-y-2 text-left">
@@ -65,8 +81,8 @@ const Register = () => {
                             placeholder="Enter your email"
                             value={formData.email}
                             onChange={handleChange}
-                            required
                         />
+                        {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                     </div>
                     
                     <div className="space-y-2 text-left">
@@ -78,8 +94,8 @@ const Register = () => {
                             placeholder="Enter your password"
                             value={formData.password}
                             onChange={handleChange}
-                            required
                         />
+                        {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                     </div>
                     
                  
@@ -91,9 +107,13 @@ const Register = () => {
                 
                 <p className="text-gray-500 text-sm">
                     Already have an account?{' '}
-                    <a href="/login" className="text-indigo-500 hover:underline">
+                    <button 
+                        type="button"
+                        onClick={() => navigate('/login')} 
+                        className="text-indigo-500 hover:underline"
+                    >
                         click here
-                    </a>
+                    </button>
                 </p>
             </form>
         </div>

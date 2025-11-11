@@ -5,29 +5,47 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { Mail, Lock } from 'lucide-react'
+import { loginAdmin } from '@/apis/admin'
+import { loginSchema, type LoginFormData } from '@/lib/validations'
 
 const Login = () => {
   const navigate = useNavigate()
 
-  const [formData, setFormData] = React.useState({
+  const [formData, setFormData] = React.useState<LoginFormData>({
     email: '',
     password: ''
   })
+  const [errors, setErrors] = React.useState<Partial<LoginFormData>>({})
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setErrors({})
 
-    if (formData.email && formData.password) {
-      localStorage.setItem('token', 'dummy-token')
-      toast.success('Login successful!')
+    const result = loginSchema.safeParse(formData)
+    if (!result.success) {
+      const fieldErrors: Partial<LoginFormData> = {}
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0] as keyof LoginFormData
+        fieldErrors[field] = issue.message
+      })
+      setErrors(fieldErrors)
+      return
+    }
+
+    try {
+      const response = await loginAdmin(formData)
+      localStorage.setItem('token', response.token)
+      localStorage.setItem('admin', JSON.stringify(response.admin))
+      toast.success(response.message || 'Login successful!')
       window.location.href = '/'
-    } else {
-      toast.error('Please fill in all fields')
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'Login failed'
+      toast.error(errorMessage)
     }
   }
 
@@ -55,8 +73,8 @@ const Login = () => {
                 value={formData.email}
                 onChange={handleChange}
                 className="pl-10"
-                required
               />
+              {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
             </div>
           </div>
           
@@ -72,8 +90,8 @@ const Login = () => {
                 value={formData.password}
                 onChange={handleChange}
                 className="pl-10"
-                required
               />
+              {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
             </div>
           </div>
         </div>
@@ -90,9 +108,13 @@ const Login = () => {
 
         <p className="text-gray-500 text-sm">
           Don't have an account?{' '}
-          <a href="/register" className="text-indigo-500 hover:underline">
+          <button 
+            type="button"
+            onClick={() => navigate('/register')} 
+            className="text-indigo-500 hover:underline"
+          >
             click here
-          </a>
+          </button>
         </p>
       </form>
     </div>

@@ -54,12 +54,28 @@ export function Layout({ children }: LayoutProps) {
             <Button
               key={item.path}
               variant={location.pathname === item.path ? "default" : "ghost"}
-              className={`w-full ${isCollapsed ? 'justify-center px-2' : 'justify-start px-4'} h-auto py-3 ${
+              className={`w-full ${isCollapsed ? 'justify-center px-2' : 'justify-start px-4'} h-auto py-3 transition-all duration-200 ${
                 location.pathname === item.path 
-                  ? 'bg-gray-200 text-black hover:bg-gray-200' 
-                  : 'text-black'
+                  ? 'text-white' 
+                  : 'text-black hover:text-white'
               }`}
-              onClick={() => navigate(item.path)}
+              style={{
+                backgroundColor: location.pathname === item.path ? '#9112BC' : 'transparent'
+              }}
+              onMouseEnter={(e) => {
+                if (location.pathname !== item.path) {
+                  e.currentTarget.style.backgroundColor = '#AE75DA'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (location.pathname !== item.path) {
+                  e.currentTarget.style.backgroundColor = 'transparent'
+                }
+              }}
+              onClick={(e) => {
+                e.preventDefault()
+                navigate(item.path)
+              }}
             >
               <item.icon className={`h-5 w-5 ${!isCollapsed ? 'mr-3' : ''}`} />
               {!isCollapsed && item.label}
@@ -68,7 +84,16 @@ export function Layout({ children }: LayoutProps) {
         </div>
         
         <div className="p-4 border-t space-y-2">
-          <Button variant="ghost" className={`w-full ${isCollapsed ? 'justify-center px-2' : 'justify-start px-4'} h-auto py-3 text-black`}>
+          <Button 
+            variant="ghost" 
+            className={`w-full ${isCollapsed ? 'justify-center px-2' : 'justify-start px-4'} h-auto py-3 text-black hover:text-white transition-all duration-200`}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = '#AE75DA'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent'
+            }}
+          >
             <Settings className={`h-5 w-5 ${!isCollapsed ? 'mr-3' : ''}`} />
             {!isCollapsed && 'Settings'}
           </Button>
