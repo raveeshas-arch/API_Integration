@@ -1,8 +1,9 @@
 import { useLocation, useNavigate } from 'react-router'
 import { ROUTES } from '../../constants'
-import { Home, Users, Database, Settings, LogOut, Menu } from 'lucide-react'
+import { Home, Users, Database, Settings, Menu } from 'lucide-react'
 import { Button } from '../ui/button'
 import { useState } from 'react'
+import UserProfile from '../common/UserProfile'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -71,17 +72,16 @@ export function Layout({ children }: LayoutProps) {
             <Settings className={`h-5 w-5 ${!isCollapsed ? 'mr-3' : ''}`} />
             {!isCollapsed && 'Settings'}
           </Button>
-          <Button variant="ghost" className={`w-full ${isCollapsed ? 'justify-center px-2' : 'justify-start px-4'} h-auto py-3 text-red-600 hover:text-red-700 hover:bg-red-50`}>
-            <LogOut className={`h-5 w-5 text-red-600 ${!isCollapsed ? 'mr-3' : ''}`} />
-            {!isCollapsed && 'Logout'}
-          </Button>
         </div>
       </nav>
       
       <div className={`flex-1 ${isCollapsed ? 'ml-16' : 'ml-64'} transition-all duration-300 flex flex-col h-screen`}>
-        <header className="bg-white border-b px-8 py-4 flex-shrink-0">
-          <h1 className="text-xl font-bold text-gray-900">{title}</h1>
-          <p className="text-sm text-gray-500">{subtitle}</p>
+        <header className="bg-white border-b px-8 py-4 flex-shrink-0 flex items-center justify-between">
+          <div>
+            <h1 className="text-xl font-bold text-gray-900">{title}</h1>
+            <p className="text-sm text-gray-500">{subtitle}</p>
+          </div>
+          <UserProfile />
         </header>
 
         <main className="flex-1 overflow-hidden bg-gray-50">

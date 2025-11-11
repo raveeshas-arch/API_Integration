@@ -131,7 +131,13 @@ const Form = ({ onAddUser }: FormProps) => {
         toast.error(result.error || 'Failed to save user');
       }
     } catch (error) {
-      toast.error('Error saving user');
+      // Check if it's a network/connection error
+      if (error instanceof Error && (error.name === 'TypeError' || error.message.includes('fetch'))) {
+        toast.error('Connection error - Server not available');
+      } else {
+        const errorMessage = error instanceof Error ? error.message : 'Connection error - Server not available';
+        toast.error(errorMessage);
+      }
       console.error('Error:', error);
     }
   }
