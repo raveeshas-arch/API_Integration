@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-
+import router from './routes/adminRoutes.js';
 dotenv.config();
 
 const app = express();
@@ -51,7 +51,8 @@ const userSchema = new mongoose.Schema(
 );
 
 const User = mongoose.model('User', userSchema);
-// Route
+
+app.use('/api/admin',router)
 
 // Add new user
 app.post('/api/users', async (req, res, next) => {

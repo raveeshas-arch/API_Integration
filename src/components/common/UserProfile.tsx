@@ -25,8 +25,7 @@ const UserProfile = () => {
   const handleLogout = () => {
     toast.success('Logged out successfully');
     localStorage.removeItem('token');
-    setIsLoggedIn(false);
-    navigate('/login');
+    window.location.href = '/login';
   };
 
   const handleLogin = () => {

@@ -25,7 +25,7 @@ const Login = () => {
     if (formData.email && formData.password) {
       localStorage.setItem('token', 'dummy-token')
       toast.success('Login successful!')
-      navigate('/')
+      window.location.href = '/'
     } else {
       toast.error('Please fill in all fields')
     }

@@ -1,4 +1,5 @@
-import { Routes, Route } from 'react-router';
+import { Routes, Route, Navigate } from 'react-router';
+import { useState, useEffect } from 'react';
 import Dashboard from './pages/Dashboard';
 import Manual from './pages/Manual';
 import API from './pages/API';
@@ -8,21 +9,40 @@ import NotFound from './pages/NotFound';
 import { Layout } from './components/Layout/Navigation';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token);
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    );
+  }
+
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/*" element={
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/manual" element={<Manual />} />
-            <Route path="/api" element={<API />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
-      } />
-    </Routes>
+    <Layout>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/manual" element={<Manual />} />
+        <Route path="/api" element={<API />} />
+        <Route path="/login" element={<Navigate to="/" replace />} />
+        <Route path="/register" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Layout>
   );
 }
 

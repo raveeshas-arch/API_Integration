@@ -4,7 +4,6 @@ import toast from 'react-hot-toast'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { User, Mail, Lock } from 'lucide-react'
 
 const Register = () => {
     const navigate = useNavigate()
@@ -12,13 +11,14 @@ const Register = () => {
     const [formData, setFormData] = React.useState({
         name: '',
         email: '',
-        password: ''
+        password: '',
+        role: 'admin'
     })
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         
-        if (formData.name && formData.email && formData.password) {
+        if (formData.name && formData.email && formData.password && formData.role) {
             toast.success('Account created successfully!')
             navigate('/login')
         } else {
@@ -45,54 +45,44 @@ const Register = () => {
                 <div className="space-y-4">
                     <div className="space-y-2 text-left">
                         <Label htmlFor="name">Full Name</Label>
-                        <div className="relative">
-                            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
-                            <Input
-                                id="name"
-                                name="name"
-                                type="text"
-                                placeholder="Enter your full name"
-                                value={formData.name}
-                                onChange={handleChange}
-                                className="pl-10"
-                                required
-                            />
-                        </div>
+                        <Input
+                            id="name"
+                            name="name"
+                            type="text"
+                            placeholder="Enter your full name"
+                            value={formData.name}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
                     
                     <div className="space-y-2 text-left">
                         <Label htmlFor="email">Email</Label>
-                        <div className="relative">
-                            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
-                            <Input
-                                id="email"
-                                name="email"
-                                type="email"
-                                placeholder="Enter your email"
-                                value={formData.email}
-                                onChange={handleChange}
-                                className="pl-10"
-                                required
-                            />
-                        </div>
+                        <Input
+                            id="email"
+                            name="email"
+                            type="email"
+                            placeholder="Enter your email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
                     
                     <div className="space-y-2 text-left">
                         <Label htmlFor="password">Password</Label>
-                        <div className="relative">
-                            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-500" />
-                            <Input
-                                id="password"
-                                name="password"
-                                type="password"
-                                placeholder="Enter your password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                className="pl-10"
-                                required
-                            />
-                        </div>
+                        <Input
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="Enter your password"
+                            value={formData.password}
+                            onChange={handleChange}
+                            required
+                        />
                     </div>
+                    
+                 
                 </div>
                 
                 <Button type="submit" className="w-full bg-indigo-500 hover:bg-indigo-600">
