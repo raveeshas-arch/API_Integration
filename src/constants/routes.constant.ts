@@ -2,6 +2,8 @@ export const ROUTES = {
   DASHBOARD: '/',
   MANUAL: '/manual',
   API: '/api',
+  LOGIN: '/login',
+  REGISTER: '/register',
 } as const;
 
 // React Query Keys
@@ -20,4 +22,3 @@ export const MESSAGES = {
 
 // Loading Component
 export { LoaderOne as LOADING_COMPONENT } from '../components/ui/loader';
-
