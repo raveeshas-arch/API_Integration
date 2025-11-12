@@ -140,7 +140,7 @@ const [rowSelection, setRowSelection] = React.useState({})
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id} className="px-2 sm:px-4 py-2 sm:py-4 text-xs sm:text-sm">
+                  <TableHead key={header.id} className="px-2 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm">
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -161,7 +161,7 @@ const [rowSelection, setRowSelection] = React.useState({})
                 data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="px-2 sm:px-4 py-2 sm:py-4 text-xs sm:text-sm">
+                  <TableCell key={cell.id} className="px-2 sm:px-4 py-1 sm:py-2 text-xs sm:text-sm">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

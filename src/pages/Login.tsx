@@ -4,7 +4,7 @@ import toast from 'react-hot-toast'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
-import { Mail, Lock } from 'lucide-react'
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react'
 import { loginAdmin } from '@/apis/admin'
 import { loginSchema, type LoginFormData } from '@/lib/validations'
 
@@ -16,6 +16,7 @@ const Login = () => {
     password: ''
   })
   const [errors, setErrors] = React.useState<Partial<LoginFormData>>({})
+  const [showPassword, setShowPassword] = React.useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
@@ -85,12 +86,19 @@ const Login = () => {
               <Input
                 id="password"
                 name="password"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
                 value={formData.password}
                 onChange={handleChange}
-                className="pl-10"
+                className="pl-10 pr-10"
               />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              </button>
               {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
             </div>
           </div>

@@ -107,7 +107,7 @@ const Form = ({ onAddUser }: FormProps) => {
 
     try {
       // Save to database
-      const response = await fetch('http://localhost:5000/api/users', {
+      const response = await fetch('http://localhost:3001/api/users', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

@@ -56,7 +56,7 @@ export function DeleteAlert({ user, onDeleteUser }: DeleteAlertProps) {
           <AlertDialogAction
             onClick={async () => {
               try {
-                const response = await fetch(`http://localhost:5000/api/users/${user.dbId}`, {
+                const response = await fetch(`http://localhost:3001/api/users/${user.dbId}`, {
                   method: 'DELETE',
                   headers: {
                     'Content-Type': 'application/json'
