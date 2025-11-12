@@ -45,6 +45,7 @@ import {
 import { ManualUser } from "../../types/ManualUser"
 import toast from 'react-hot-toast'
 import { MESSAGES } from '../../constants'
+import { API_ENDPOINTS } from '../../config/api'
 
 const formFields = [
   { name: "fullName", label: "Full Name", type: "text" },
@@ -125,7 +126,7 @@ export function EditUser({ user, onUpdateUser }: EditUserProps) {
   }
 
   try {
-    const response = await fetch(`http://localhost:5000/api/users/${user.dbId}`, {
+    const response = await fetch(`${API_ENDPOINTS.USERS}/${user.dbId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

@@ -40,17 +40,21 @@ export const createProductColumns = (props?: ProductColumnsProps): ColumnDef<Pro
       />
     ),
   },
-  // {
-  //   accessorKey: "thumbnail",
-  //   header: "Image",
-  //   cell: ({ row }) => (
-  //     <img 
-  //       src={row.original.thumbnail} 
-  //       alt={row.original.title}
-  //       className="w-12 h-12 object-cover rounded"
-  //     />
-  //   ),
-  // },
+  {
+    accessorKey: "thumbnail",
+    header: "Image",
+    cell: ({ row }) => (
+      <img 
+        src={row.original.thumbnail} 
+        alt={row.original.title}
+        className="w-8 h-8 object-cover rounded border"
+        onError={(e) => {
+          const target = e.target as HTMLImageElement;
+          target.src = 'https://via.placeholder.com/32x32?text=No+Image';
+        }}
+      />
+    ),
+  },
   ...columnDefinitions.map(({ key, title }) => ({
     accessorKey: key,
     header: ({ column }: any) => (

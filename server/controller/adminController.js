@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
 import adminModel from "../models/adminModel.js";
 
 //register
@@ -7,12 +8,13 @@ export const registerAdmin = async (req, res) => {
     const { name, email, password } = req.body;
     const existingAdmin = await adminModel.findOne({ email });
     if (existingAdmin) {
-      return res.status(400).json({ message: "Admin already exists" });
+      return res.status(400).json({ message: "Email already exists" });
     }
+    const hashedPassword = await bcrypt.hash(password, 10);
     const newAdmin = new adminModel({
       name,
       email,
-      password,
+      password: hashedPassword,
     });
 
     await newAdmin.save();
@@ -29,11 +31,12 @@ export const loginAdmin = async (req, res) => {
     const { email, password } = req.body;
 
     const admin = await adminModel.findOne({ email });
-    if (!admin) {
-      return res.status(400).json({ message: "Invalid email or password" });
-    }
+   if (!admin) {
+  return res.status(400).json({ message: "User not registered" });
+}
 
-    if (admin.password !== password) {
+    const isPasswordValid = await bcrypt.compare(password, admin.password);
+    if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
@@ -50,22 +53,13 @@ export const loginAdmin = async (req, res) => {
         id: admin._id,
         name: admin.name,
         email: admin.email,
+        profilePic: admin.profilePic,
       },
     });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
-
-//Get All Admins
-// export const getAllAdmins = async (req, res) => {
-//   try {
-//     const admins = await adminModel.find().select("-password");
-//     res.status(200).json(admins);
-//   } catch (error) {
-//     res.status(500).json({ message: "Server error", error: error.message });
-//   }
-// };
 
 
 //admin logout
