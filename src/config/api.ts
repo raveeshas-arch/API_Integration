@@ -7,4 +7,16 @@ export const API_ENDPOINTS = {
   ADMIN: `${API_BASE_URL}/api/admin`,
 };
 
+// Fetch with credentials for cookie support
+export const fetchWithCredentials = async (url: string, options: RequestInit = {}) => {
+  return fetch(url, {
+    ...options,
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+  });
+};
+
 export default API_ENDPOINTS;

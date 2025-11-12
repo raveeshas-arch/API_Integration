@@ -2,13 +2,20 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 import router from './routes/adminRoutes.js';
+
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT ;
+const PORT = process.env.PORT;
+
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true
+}));
+app.use(cookieParser());
 app.use(express.json({ limit: '10mb' }));
 
 // Request timeout middleware
@@ -28,15 +35,17 @@ app.use((req, res, next) => {
   console.log(`${req.method} ${req.path}`, req.body);
   next();
 });
-// MongoDB Connectio
+
+// MongoDB Connection
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected successfully'))
   .catch((err) => {
     console.error('MongoDB connection error:', err.message);
-    process.exit(1); // Stop server if DB connection fails
+    process.exit(1);
   });
-// User Schema & Mode
+
+// User Schema & Model
 const userSchema = new mongoose.Schema(
   {
     fullName: { type: String, required: true },
@@ -52,14 +61,13 @@ const userSchema = new mongoose.Schema(
 
 const User = mongoose.model('User', userSchema);
 
-app.use('/api/admin',router)
+app.use('/api/admin', router);
 
 // Add new user
 app.post('/api/users', async (req, res, next) => {
   try {
     const { fullName, age, email, phone, gender, course } = req.body;
 
-    // Validation
     if (!fullName || !age || !email || !phone || !gender || !course) {
       return res.status(400).json({ 
         success: false, 
@@ -68,7 +76,6 @@ app.post('/api/users', async (req, res, next) => {
       });
     }
 
-    // Check for duplicate email
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(409).json({ 
@@ -99,7 +106,6 @@ app.get('/api/users', async (req, res, next) => {
 // Update user by ID
 app.put('/api/users/:id', async (req, res, next) => {
   try {
-    // Validate ObjectId
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ 
         success: false, 
@@ -127,7 +133,6 @@ app.put('/api/users/:id', async (req, res, next) => {
 // Delete user by ID
 app.delete('/api/users/:id', async (req, res, next) => {
   try {
-    // Validate ObjectId
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ 
         success: false, 
@@ -149,6 +154,7 @@ app.delete('/api/users/:id', async (req, res, next) => {
     next(error);
   }
 });
+
 // 404 Route Handler
 app.use((req, res) => {
   res.status(404).json({ 
@@ -157,11 +163,11 @@ app.use((req, res) => {
     error: 'ROUTE_NOT_FOUND'
   });
 });
+
 // Global Error Handler
 app.use((err, req, res, next) => {
   console.error('Error:', err);
   
-  // MongoDB validation errors
   if (err.name === 'ValidationError') {
     const errors = Object.values(err.errors).map(e => e.message);
     return res.status(400).json({
@@ -172,7 +178,6 @@ app.use((err, req, res, next) => {
     });
   }
   
-  // MongoDB duplicate key error
   if (err.code === 11000) {
     const field = Object.keys(err.keyValue)[0];
     return res.status(409).json({
@@ -182,7 +187,6 @@ app.use((err, req, res, next) => {
     });
   }
   
-  // MongoDB CastError (invalid ObjectId)
   if (err.name === 'CastError') {
     return res.status(400).json({
       success: false,
@@ -191,14 +195,13 @@ app.use((err, req, res, next) => {
     });
   }
   
-  // Default server error
   res.status(err.status || 500).json({
     success: false,
     message: err.message || 'Internal Server Error',
     error: 'SERVER_ERROR'
   });
 });
-// Start Serve
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
