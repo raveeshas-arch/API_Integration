@@ -5,32 +5,23 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { registerAdmin } from '@/apis/admin'
-import { registerSchema, type RegisterFormData } from '@/lib/validations'
 import { Eye, EyeOff } from 'lucide-react'
 
 const Register = () => {
     const navigate = useNavigate()
 
-    const [formData, setFormData] = React.useState<RegisterFormData>({
+    const [formData, setFormData] = React.useState({
         name: '',
         email: '',
         password: ''
     })
-    const [errors, setErrors] = React.useState<Partial<RegisterFormData>>({})
     const [showPassword, setShowPassword] = React.useState(false)
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        setErrors({})
         
-        const result = registerSchema.safeParse(formData)
-        if (!result.success) {
-            const fieldErrors: Partial<RegisterFormData> = {}
-            result.error.issues.forEach((issue) => {
-                const field = issue.path[0] as keyof RegisterFormData
-                fieldErrors[field] = issue.message
-            })
-            setErrors(fieldErrors)
+        if (!formData.name || !formData.email || !formData.password) {
+            toast.error('Please fill all required fields')
             return
         }
 
@@ -70,8 +61,8 @@ const Register = () => {
                             placeholder="Enter your full name"
                             value={formData.name}
                             onChange={handleChange}
+                            required
                         />
-                        {errors.name && <p className="text-red-500 text-sm">{errors.name}</p>}
                     </div>
                     
                     <div className="space-y-2 text-left">
@@ -83,8 +74,8 @@ const Register = () => {
                             placeholder="Enter your email"
                             value={formData.email}
                             onChange={handleChange}
+                            required
                         />
-                        {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
                     </div>
                     
                     <div className="space-y-2 text-left">
@@ -98,6 +89,7 @@ const Register = () => {
                                 value={formData.password}
                                 onChange={handleChange}
                                 className="pr-10"
+                                required
                             />
                             <button
                                 type="button"
@@ -107,7 +99,6 @@ const Register = () => {
                                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                             </button>
                         </div>
-                        {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
                     </div>
                 </div>
                 

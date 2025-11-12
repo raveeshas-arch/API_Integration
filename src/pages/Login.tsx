@@ -40,7 +40,7 @@ const Login = () => {
 
     try {
       const response = await loginAdmin(formData)
-      localStorage.setItem('token', response.token)
+      localStorage.setItem('token', 'dummy-token')
       localStorage.setItem('admin', JSON.stringify(response.admin))
       toast.success(response.message || 'Login successful!')
       window.location.href = '/'

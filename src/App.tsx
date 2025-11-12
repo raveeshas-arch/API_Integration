@@ -7,53 +7,16 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import NotFound from './pages/NotFound';
 import { Layout } from './components/Layout/Navigation';
-import toast from 'react-hot-toast';
-
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const isTokenExpired = (token: string): boolean => {
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      const currentTime = Date.now() / 1000;
-      return payload.exp < currentTime;
-    } catch {
-      return true;
-    }
-  };
-
-  const logout = () => {
-    localStorage.removeItem('token');
-    localStorage.removeItem('admin');
-    setIsAuthenticated(false);
-    toast.error('Session expired. Please login again.');
-  };
-
   useEffect(() => {
-    const checkAuth = () => {
-      const token = localStorage.getItem('token');
-      if (token && isTokenExpired(token)) {
-        logout();
-        return;
-      }
-      setIsAuthenticated(!!token);
-      setLoading(false);
-    };
-    
-    checkAuth();
-    
-    // Check token every minute
-    const interval = setInterval(checkAuth, 60000);
-    
-    // Listen for storage changes
-    window.addEventListener('storage', checkAuth);
-    
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener('storage', checkAuth);
-    };
+    // Check if user has token (simple localStorage check)
+    const token = localStorage.getItem('token');
+    setIsAuthenticated(!!token);
+    setLoading(false);
   }, []);
 
   if (loading) {
