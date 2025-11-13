@@ -32,7 +32,7 @@ interface DetailsProps {
   title: string
   description: string
   sections: SectionConfig[]
-  // imageKey?: string
+  imageKey?: string
 }
 
 const getNestedValue = (obj: any, path: string) => {
@@ -46,47 +46,47 @@ export function Details({
   title, 
   description, 
   sections, 
-  // imageKey 
+  imageKey 
 }: DetailsProps) {
   if (!data) return null
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px]">
+    <Dialog open={open} onOpenChange={onOpenChange} >
+      <DialogContent className="w-[95vw] max-w-[500px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>
+          <DialogTitle className="text-lg sm:text-xl">{title}</DialogTitle>
+          <DialogDescription className="text-sm">
             {description}
           </DialogDescription>
         </DialogHeader>
-        <div className="space-y-6">
-          {/* {imageKey && (
+        <div className="space-y-4 sm:space-y-6">
+          {imageKey && (
             <div className="flex justify-center">
               <img 
-                src={getNestedValue(data, Key)} 
+                src={getNestedValue(data, imageKey)} 
                 alt={title}
-                className="w-32 h-32 object-cover rounded-lg"
+                className="w-24 h-24 sm:w-32 sm:h-32 object-cover rounded-lg"
               />
             </div>
-          )} */}
+          )}
           
           {sections.map((section, sectionIndex) => (
             <div key={section.title}>
-              <h3 className="text-sm font-medium text-gray-500 mb-3">{section.title}</h3>
-              <div className={section.fields.length > 2 ? "grid grid-cols-2 gap-4" : "space-y-3"}>
+              <h3 className="text-sm font-medium text-gray-500 mb-2 sm:mb-3">{section.title}</h3>
+              <div className={section.fields.length > 2 ? "grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4" : "space-y-3"}>
                 {section.fields.map((field) => {
                   const value = getNestedValue(data, field.key) || field.fallback
                   return (
-                    <div key={field.key} className={field.span === 2 ? "col-span-2" : ""}>
+                    <div key={field.key} className={field.span === 2 ? "sm:col-span-2" : ""}>
                       <span className="text-xs text-gray-500">{field.label}</span>
                       {field.badge ? (
                         <div className="mt-1">
-                          <Badge variant={field.variant as any || "secondary"} className="capitalize">
+                          <Badge variant={field.variant as any || "secondary"} className="capitalize text-xs">
                             {value}
                           </Badge>
                         </div>
                       ) : (
-                        <p className={`text-sm font-medium ${field.mono ? 'font-mono' : ''}`}>
+                        <p className={`text-sm font-medium break-words ${field.mono ? 'font-mono' : ''}`}>
                           {field.prefix || ''}{value}{field.suffix || ''}
                         </p>
                       )}
@@ -94,7 +94,7 @@ export function Details({
                   )
                 })}
               </div>
-              {sectionIndex < sections.length - 1 && <Separator className="mt-6" />}
+              {sectionIndex < sections.length - 1 && <Separator className="mt-4 sm:mt-6" />}
             </div>
           ))}
         </div>
@@ -102,3 +102,5 @@ export function Details({
     </Dialog>
   )
 }
+       
+  

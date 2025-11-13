@@ -6,7 +6,7 @@ const EXTERNAL_API = "https://dummyjson.com";
 // Create separate axios instances
 const internalAPI = axios.create({
   baseURL: BASE_URL,
-  withCredentials: true // Only for internal API
+  withCredentials: true 
 });
 
 const externalAPI = axios.create({
@@ -18,6 +18,7 @@ export const fetchUsers = async () => {
   const response = await internalAPI.get("/api/users");
   return response.data;
 };
+
 
 export const addUser = async (userData: any) => {
   const response = await internalAPI.post("/api/users", userData);
@@ -46,6 +47,19 @@ export const fetchProducts = async () => {
 };
 
 export const fetchProductsCount = async () => {
+
   const response = await externalAPI.get("/products");
+
   return response.data.total || 0;
+
+};
+
+
+
+export const fetchProductCategoriesCount = async () => {
+
+  const response = await externalAPI.get("/products/categories");
+
+  return response.data.length || 0;
+
 };
