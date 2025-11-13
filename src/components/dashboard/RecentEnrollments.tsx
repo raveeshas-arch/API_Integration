@@ -16,9 +16,9 @@ export function RecentEnrollments() {
     .map(user => ({ name: user.fullName, course: user.course }))
 
   return (
-    <Card>
+    <Card className='dark:bg-gray-800 hover:scale-101 transition-transform duration-300 ease-in-out shadow-xl'>
       <CardHeader>
-        <CardTitle className="flex items-center text-lg font-semibold">
+        <CardTitle className="flex items-center text-lg font-semibold ">
           <UserCheck className="h-5 w-5 text-blue-600 mr-2" />
           Recent Enrollments
         </CardTitle>
@@ -28,9 +28,9 @@ export function RecentEnrollments() {
           {recentStudents.length > 0 ? (
             <div className="space-y-2">
               {recentStudents.map((student, index) => (
-                <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
-                  <span className="font-medium text-gray-900">{student.name}</span>
-                  <span className="text-sm text-gray-600">{student.course}</span>
+                <div key={index} className="flex justify-between items-center p-3 bg-gray-50 rounded-lg dark:bg-gray-800">
+                  <span className="font-medium text-gray-900 dark:text-gray-200 ">{student.name}</span>
+                  <span className="text-sm text-gray-600 dark:text-white">{student.course}</span>
                 </div>
               ))}
             </div>

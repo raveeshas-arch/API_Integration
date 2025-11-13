@@ -30,8 +30,8 @@ export function DateTime() {
 
   return (
     <div className="text-right">
-      <div className="text-sm font-medium text-gray-900">{formatDate(currentTime)}</div>
-      <div className="text-xs text-gray-500">{formatTime(currentTime)}</div>
+      <div className="text-sm font-medium text-gray-900 dark:text-white transition-colors">{formatDate(currentTime)}</div>
+      <div className="text-xs text-gray-500 dark:text-gray-400 transition-colors">{formatTime(currentTime)}</div>
     </div>
   );
 }

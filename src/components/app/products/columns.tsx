@@ -81,7 +81,7 @@ export const createProductColumns = (props?: ProductColumnsProps): ColumnDef<Pro
           variant="ghost"
           size="sm"
           onClick={() => props?.onViewProduct?.(product)}
-          className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700"
+          className="h-8 w-8 p-0 text-blue-600 hover:text-blue-700 dark:text-blue-300"
         >
           <Eye className="h-4 w-4" />
         </Button>

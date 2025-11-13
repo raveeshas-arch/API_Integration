@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchProductsList, fetchProductsCount, fetchProductCategoriesCount } from '../apis/user';
+import { fetchProductsList, fetchProductsCount, fetchProductCategoriesCount, fetchTopRatedProducts } from '../apis/user';
 import { QUERY_KEYS } from '../constants';
 
 export const useProductsCount = () => {
@@ -23,3 +23,9 @@ export const useProductsList = () => {
   });
 };
 
+export const useTopRatedProducts = () => {
+  return useQuery({
+    queryKey: [...QUERY_KEYS.USERS, 'top-rated'],
+    queryFn: fetchTopRatedProducts,
+  });
+};

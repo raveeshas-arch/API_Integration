@@ -11,7 +11,7 @@ const internalAPI = axios.create({
 
 const externalAPI = axios.create({
   baseURL: EXTERNAL_API,
-  withCredentials: false // No credentials for external API
+  withCredentials: false 
 });
 
 export const fetchUsers = async () => {
@@ -62,4 +62,9 @@ export const fetchProductCategoriesCount = async () => {
 
   return response.data.length || 0;
 
+};
+
+export const fetchTopRatedProducts = async () => {
+  const response = await externalAPI.get("/products");
+  return response.data.products.sort((a: any, b: any) => b.rating - a.rating).slice(0, 10);
 };

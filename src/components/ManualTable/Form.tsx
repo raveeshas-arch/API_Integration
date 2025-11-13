@@ -148,7 +148,7 @@ const Form = ({ onAddUser }: FormProps) => {
     <div>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant="outline" className="font-bold bg-gray-200 hover:bg-black hover:text-white cursor-pointer">
+          <Button variant="outline" className="font-bold bg-gray-200 hover:bg-black hover:text-white cursor-pointer ">
             <UserRoundPlus />
             Add New User</Button>
         </DialogTrigger>
@@ -228,7 +228,6 @@ const Form = ({ onAddUser }: FormProps) => {
                       <SelectContent>
                         <SelectItem value="Male">Male</SelectItem>
                         <SelectItem value="Female">Female</SelectItem>
-                        <SelectItem value="Other">Other</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />
@@ -262,9 +261,9 @@ const Form = ({ onAddUser }: FormProps) => {
               />
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button variant="outline">Cancel</Button>
+                  <Button variant="outline" className='dark:bg-gray-800'>Cancel</Button>
                 </DialogClose>
-                <Button type="submit">Add User</Button>
+                <Button type="submit" >Add User</Button>
               </DialogFooter>
             </form>
           </FormProvider>

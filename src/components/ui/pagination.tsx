@@ -19,14 +19,14 @@ export function Pagination<TData>({ table }: PaginationProps<TData>) {
         {table.getFilteredRowModel().rows.length} row(s) selected.
       </div>
       <div className="flex items-center space-x-6">
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-5">
           <p className="text-sm font-medium">Rows per page</p>
           <select
             value={table.getState().pagination.pageSize}
             onChange={(e) => {
               table.setPageSize(Number(e.target.value))
             }}
-            className="h-8 w-[70px] rounded border border-input bg-background px-3 py-1 text-sm"
+            className="h-8 w-[70px] rounded border border-input bg-background px-2 py-1 text-sm dark:bg-gray-800"
           >
             {[5,10, 20, 30, 50, 100].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
@@ -35,7 +35,7 @@ export function Pagination<TData>({ table }: PaginationProps<TData>) {
             ))}
           </select>
         </div>
-        <div className="flex w-[100px] items-center justify-center text-sm font-medium">
+        <div className="flex w-[100px] items-center justify-center text-sm font-medium ">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
           {table.getPageCount()}
         </div>
