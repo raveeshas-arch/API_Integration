@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { fetchProductsList, fetchProductsCount } from '../apis/user';
+import { fetchProductsList, fetchProductsCount, fetchProductCategoriesCount } from '../apis/user';
 import { QUERY_KEYS } from '../constants';
 
 export const useProductsCount = () => {
@@ -9,9 +9,17 @@ export const useProductsCount = () => {
   });
 };
 
+export const useProductCategoriesCount = () => {
+    return useQuery({
+        queryKey: [...QUERY_KEYS.USERS, 'categories-count'],
+        queryFn: fetchProductCategoriesCount,
+    });
+};
+
 export const useProductsList = () => {
   return useQuery({
     queryKey: [...QUERY_KEYS.USERS, 'list'],
     queryFn: fetchProductsList,
   });
 };
+

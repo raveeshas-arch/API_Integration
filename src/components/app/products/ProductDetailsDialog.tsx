@@ -41,7 +41,7 @@ export function ProductDetailsDialog({ product, open, onOpenChange }: ProductDet
       title={product?.title || "Product Details"}
       description="Complete product information"
       sections={productSections}
-      // imageKey="thumbnail"
+      imageKey="thumbnail"
     />
   )
 }
