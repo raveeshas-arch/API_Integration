@@ -158,7 +158,7 @@ export function EditUser({ user, onUpdateUser }: EditUserProps) {
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0 text-green-600 hover:text-green-700"
+              className="h-8 w-8 p-0 text-green-600 hover:text-green-700 dark:text-green-400"
             >
               <Edit className="h-4 w-4" />
             </Button>

@@ -34,7 +34,7 @@ export function DeleteAlert({ user, onDeleteUser }: DeleteAlertProps) {
             <Button
               variant="ghost"
               size="sm"
-              className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+              className="h-8 w-8 p-0 text-red-600 hover:text-red-700 dark:text-red-400"
             >
               <Trash2 className="h-4 w-4" />
             </Button>
@@ -76,7 +76,7 @@ export function DeleteAlert({ user, onDeleteUser }: DeleteAlertProps) {
                 console.error('Error:', error)
               }
             }}
-            className="bg-red-600 hover:bg-red-700"
+            className="bg-red-600 hover:bg-red-700  dark:bg-red-400"
           >
             Delete
           </AlertDialogAction>

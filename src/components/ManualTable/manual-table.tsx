@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import toast from 'react-hot-toast'
 import { useManualUserStore } from '../../stores/manualUserStore'
-import { MESSAGES } from '../../constants'
+
 
 const ManualTable = () => {
   const { users: manualUsers, addUser, deleteUser, updateUser, clearAll } = useManualUserStore()
@@ -69,7 +69,7 @@ const ManualTable = () => {
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   onClick={handleDeleteAll}
-                  className="bg-red-600 hover:bg-red-700"
+                  className="bg-red-600 hover:bg-red-700  dark:bg-red-400"
                 >
                   Delete All
                 </AlertDialogAction>

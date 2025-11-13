@@ -2,6 +2,8 @@ import { Users, Database,  BookOpen ,ShoppingCart } from 'lucide-react'
 import { CourseBreakdownChart } from '../components/dashboard/CourseBreakdownChart'
 import { StatCard } from '../components/dashboard/StatCard'
 import { RecentEnrollments } from '../components/dashboard/RecentEnrollments'
+import { TopRatedProducts } from '../components/dashboard/TopRatedProducts'
+import { ProductCategoriesPieChart } from '../components/dashboard/ProductCategoriesPieChart'
 import { useManualUserStore } from '../stores/manualUserStore'
 import { useProductCategoriesCount, useProductsCount } from '../hooks/useUser'
 
@@ -55,6 +57,11 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <RecentEnrollments />
         <CourseBreakdownChart />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <TopRatedProducts />
+        <ProductCategoriesPieChart />
       </div>
     </div>
   )

@@ -35,7 +35,7 @@ export function StatCard({ title, value, icon: Icon, color }: StatCardProps) {
   const colors = colorClasses[color]
 
   return (
-    <Card className='drop-shadow-lg'>
+    <Card className='drop-shadow-lg dark:bg-gray-800 hover:scale-101 transition-transform duration-300 ease-in-out'>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <h3 className={`text-sm font-medium `}>{title}</h3>
         <div className={`${colors.bg} p-3 rounded-lg`}>

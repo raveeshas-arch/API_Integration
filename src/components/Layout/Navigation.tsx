@@ -1,16 +1,18 @@
 import { useLocation, useNavigate } from 'react-router'
 import { ROUTES } from '../../constants'
-import { Home, Users, Database, Settings, GraduationCap } from 'lucide-react'
+import { Home, Users, Database, Settings, LayoutDashboard } from 'lucide-react'
 import { Button } from '../ui/button'
 import UserProfile from '../common/UserProfile'
 import { DateTime } from '../common/DateTime'
+import { ThemeToggle } from '../common/ThemeToggle'
+import Dashboard from '../../pages/Dashboard';
 
 interface LayoutProps {
   children: React.ReactNode
 }
 
 const navItems = [
-  { path: ROUTES.DASHBOARD, label: 'Dashboard', icon: Home },
+  { path: ROUTES.DASHBOARD, label: 'Home', icon: Home },
   { path: ROUTES.MANUAL, label: 'Manual', icon: Users },
   { path: ROUTES.API, label: 'API ', icon: Database },
 ]
@@ -36,13 +38,14 @@ export function Layout({ children }: LayoutProps) {
   const { title, subtitle } = getPageTitle(location.pathname)
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       {/* Sidebar */}
-      <nav className="w-52 bg-white border-r shadow-sm flex flex-col fixed h-full">
-        <div className="p-6 border-b flex items-center justify-between">
-          <h2 className="font-bold text-blue-800 flex items-center gap-2 text-sm">
-            <GraduationCap className="h-6 w-6" /> River High School
+      <nav className="w-52 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 shadow-sm flex flex-col fixed h-full transition-colors">
+        <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between transition-colors">
+          <h2 className="font-bold text-blue-800 dark:text-blue-400 flex items-center gap-2 text-sm transition-colors">
+            <LayoutDashboard className="h-6 w-6" /> Dashboard 
           </h2>
+          <ThemeToggle />
         </div>
 
         <div className="flex-1 p-4 space-y-2">
@@ -52,8 +55,8 @@ export function Layout({ children }: LayoutProps) {
               variant={location.pathname === item.path ? 'default' : 'ghost'}
               className={`w-full justify-start px-4 h-auto py-2 transition-all duration-200 ${
                 location.pathname === item.path
-                  ? 'bg-gray-200 text-black hover:bg-gray-200'
-                  : 'text-black hover:bg-gray-100'
+                  ? 'bg-gray-200 dark:bg-gray-700 text-black dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700'
+                  : 'text-black dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'
               }`}
               onClick={(e) => {
                 e.preventDefault()
@@ -66,10 +69,10 @@ export function Layout({ children }: LayoutProps) {
           ))}
         </div>
 
-        <div className="p-4 border-t space-y-2">
+        <div className="p-4 border-t border-gray-200 dark:border-gray-700 space-y-2 transition-colors">
           <Button
             variant="ghost"
-            className="w-full justify-start px-4 h-auto py-2 text-black hover:bg-gray-100 transition-all duration-200"
+            className="w-full justify-start px-4 h-auto py-2 text-black dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200"
           >
             <Settings className="h-5 w-5 mr-3" />
             Settings
@@ -81,16 +84,18 @@ export function Layout({ children }: LayoutProps) {
       </nav>
 
       {/* Main Content */}
-      <div className="flex-1 ml-52 flex flex-col h-screen">
-        <header className="bg-white border-b px-8 py-4 flex-shrink-0 flex items-center justify-between">
+      <div className="flex-1 ml-52 flex flex-col min-h-screen">
+        <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-8 py-4 flex-shrink-0 flex items-center justify-between transition-colors">
           <div>
-            <h1 className="text-xl font-bold text-gray-900">{title}</h1>
-            <p className="text-sm text-gray-500">{subtitle}</p>
+            <h1 className="text-xl font-bold text-gray-900 dark:text-white transition-colors">{title}</h1>
+            <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors">{subtitle}</p>
           </div>
-          <DateTime />
+          <div className="flex items-center gap-4">
+            <DateTime />
+          </div>
         </header>
 
-        <main className="flex-1 overflow-hidden bg-gray-50">
+        <main className="flex-1 overflow-y-auto bg-gray-50 dark:bg-gray-900 transition-colors">
           {children}
         </main>
       </div>
