@@ -18,6 +18,7 @@ import { Label } from '@/components/ui/label';
 import { useNavigate } from 'react-router';
 import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
+import { logoutAdmin } from '@/apis/admin';
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -51,11 +52,28 @@ const UserProfile = () => {
     }
   }, []);
 
-  const handleLogout = () => {
-    toast.success('Logged out successfully');
-    localStorage.removeItem('token');
-    localStorage.removeItem('admin');
-    window.location.href = '/login';
+  const handleLogout = async () => {
+    try {
+      await logoutAdmin();
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
+      localStorage.removeItem('token');
+      localStorage.removeItem('admin');
+      localStorage.removeItem('expiresAt');
+      
+      // Clear browser cache
+      if ('caches' in window) {
+        caches.keys().then(names => {
+          names.forEach(name => {
+            caches.delete(name);
+          });
+        });
+      }
+      
+      toast.success('Logged out successfully');
+      window.location.href = '/login?t=' + Date.now();
+    }
   };
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
