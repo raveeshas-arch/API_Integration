@@ -20,9 +20,12 @@ import { useState, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { logoutAdmin } from '@/apis/admin';
 
-const UserProfile = () => {
+interface UserProfileProps {
+  isAuthenticated?: boolean;
+}
+
+const UserProfile = ({ isAuthenticated = true }: UserProfileProps) => {
   const navigate = useNavigate();
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [userName, setUserName] = useState('Admin');
   const [profilePic, setProfilePic] = useState<string | null>(null);
   const [showAccountDialog, setShowAccountDialog] = useState(false);
@@ -32,10 +35,7 @@ const UserProfile = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
     const admin = localStorage.getItem('admin');
-    
-    setIsLoggedIn(!!token);
     
     if (admin) {
       try {
@@ -110,8 +110,8 @@ const UserProfile = () => {
     navigate('/login');
   };
 
-  // Show Login button if not logged in
-  if (!isLoggedIn) {
+  // Show Login button if not authenticated
+  if (!isAuthenticated) {
     return (
       <Button 
         variant="ghost" 
@@ -124,7 +124,7 @@ const UserProfile = () => {
     );
   }
 
-  // Show user profile if logged in
+  // Show user profile if authenticated
   return (
     <>
     <DropdownMenu>

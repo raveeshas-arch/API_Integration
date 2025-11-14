@@ -9,6 +9,7 @@ import Dashboard from '../../pages/Dashboard';
 
 interface LayoutProps {
   children: React.ReactNode
+  isAuthenticated: boolean
 }
 
 const navItems = [
@@ -32,7 +33,7 @@ const getPageTitle = (pathname: string) => {
   }
 }
 
-export function Layout({ children }: LayoutProps) {
+export function Layout({ children, isAuthenticated }: LayoutProps) {
   const location = useLocation()
   const navigate = useNavigate()
   const { title, subtitle } = getPageTitle(location.pathname)
@@ -78,7 +79,7 @@ export function Layout({ children }: LayoutProps) {
             Settings
           </Button>
           <div className="pt-2">
-            <UserProfile />
+            <UserProfile isAuthenticated={isAuthenticated} />
           </div>
         </div>
       </nav>
