@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts'
+import { ShoppingCart } from 'lucide-react'
+import { PieChart, Pie, Cell, ResponsiveContainer  } from 'recharts'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart'
 
@@ -35,10 +36,10 @@ export function ProductCategoriesPieChart() {
         })
 
         const colors = [
-          '#3B82F6', // Blue
-          '#10B981', // Green  
-          '#F59E0B', // Orange
-          '#EF4444'  // Red
+          '#3B82F6', 
+          '#10B981',
+          '#F59E0B', 
+          '#EF4444'  
         ]
 
         const breakdown = Object.entries(categoryCount)
@@ -66,7 +67,7 @@ export function ProductCategoriesPieChart() {
       <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 transition-colors hover:scale-[1.02] duration-300 ease-in-out shadow-lg">
         <CardHeader>
           <CardTitle className="flex items-center text-gray-900 dark:text-white transition-colors">
-            <div className="h-5 w-5 text-blue-600 mr-2" />
+            <div className="h-5 w-5 text-blue-600 mr-2 text-sm " />
             Product Categories
           </CardTitle>
         </CardHeader>
@@ -87,8 +88,8 @@ export function ProductCategoriesPieChart() {
   return (
     <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 transition-all hover:scale-[1.02] duration-300 ease-in-out shadow-lg">
       <CardHeader>
-        <CardTitle className="flex items-center text-gray-900 dark:text-white transition-colors">
-          <div className="h-5 w-5 text-blue-600 mr-2" />
+        <CardTitle className="flex  text-gray-900 dark:text-white transition-colors text-lg font-semibold  gap-3 items-center mt-5">
+      <ShoppingCart className='dark:text-blue-400 text-blue-600 '/>
           Product Categories
         </CardTitle>
       </CardHeader>
@@ -130,11 +131,11 @@ export function ProductCategoriesPieChart() {
                   className="w-3 h-3 rounded-full mr-2" 
                   style={{ backgroundColor: item.fill }}
                 ></div>
-                <span className="text-sm font-medium text-gray-700 dark:text-gray-300 capitalize transition-colors">
+                <span className="text-sm font-medium text-gray-700 dark:text-white capitalize transition-colors">
                   {item.category}
                 </span>
               </div>
-              <span className="text-sm text-gray-600 dark:text-gray-400 transition-colors">
+              <span className="text-sm text-gray-600 dark:text-white transition-colors">
                 {item.count} ({item.percentage.toFixed(1)}%)
               </span>
             </div>

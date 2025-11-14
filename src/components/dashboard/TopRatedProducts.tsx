@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react'
+import { Star ,PackageSearch } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { useTopRatedProducts } from '../../hooks/useUser'
@@ -29,7 +29,7 @@ export function TopRatedProducts() {
   return (
     <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700  shadow-xl p-6  hover:scale-101 transition-transform duration-300 ease-in-out">
       <CardHeader>
-        <CardTitle className="text-gray-900 dark:text-white transition-colors">Top Rated Products</CardTitle>
+        <CardTitle className="text-gray-900 dark:text-white transition-colors text-lg font-semibold flex gap-3 items-center"> <PackageSearch className='dark:text-green-400 text-green-600'/>Top Rated Products</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
