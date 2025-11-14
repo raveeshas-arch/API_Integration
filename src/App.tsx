@@ -13,15 +13,50 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
 
+  const checkAuth = async () => {
+    try {
+      const res = await fetch("http://localhost:3001/auth/verify", {
+        credentials: "include",
+      });
+      return res.status === 200;
+    } catch (error) {
+      // Silently handle network errors
+      return false;
+    }
+  };
+
+  // Initial auth check
   useEffect(() => {
-    // Check if user has token (simple localStorage check)
-    const token = localStorage.getItem('token');
-    setIsAuthenticated(!!token);
-    setLoading(false);
+    const verify = async () => {
+      const valid = await checkAuth();
+      setIsAuthenticated(valid);
+      setLoading(false);
+    };
+
+    verify();
   }, []);
 
+  // Interval to detect manual cookie deletion
+  useEffect(() => {
+    if (!isAuthenticated) return; // Only check if currently authenticated
+
+    const interval = setInterval(async () => {
+      const valid = await checkAuth();
+
+      if (!valid && isAuthenticated) {
+        setIsAuthenticated(false);
+      }
+    }, 5000); // every 5 sec
+
+    return () => clearInterval(interval);
+  }, [isAuthenticated]);
+
   if (loading) {
-    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        Loading...
+      </div>
+    );
   }
 
   if (!isAuthenticated) {
@@ -38,7 +73,7 @@ function App() {
 
   return (
     <ThemeProvider defaultTheme="light">
-      <Layout>
+      <Layout isAuthenticated={isAuthenticated}>
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/manual" element={<Manual />} />
