@@ -99,8 +99,29 @@ app.post('/api/users', async (req, res, next) => {
 // Get all users
 app.get('/api/users', async (req, res, next) => {
   try {
-    const users = await User.find();
-    res.status(200).json({ success: true, count: users.length, users });
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+
+    const totalUsers = await User.countDocuments();
+    const users = await User.find()
+      .skip(skip)
+      .limit(limit)
+      .sort({ createdAt: -1 });
+
+    const totalPages = Math.ceil(totalUsers / limit);
+
+    res.status(200).json({ 
+      success: true, 
+      users,
+      pagination: {
+        currentPage: page,
+        totalPages,
+        totalUsers,
+        hasNext: page < totalPages,
+        hasPrev: page > 1
+      }
+    });
   } catch (error) {
     next(error);
   }

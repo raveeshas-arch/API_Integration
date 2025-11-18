@@ -11,24 +11,34 @@ export function CourseBreakdownChart() {
   const [courseBreakdown, setCourseBreakdown] = useState<CourseData[]>([])
 
   useEffect(() => {
-    // Get manual users from localStorage
-    const manualUsers = JSON.parse(localStorage.getItem('manualUsers') || '[]')
+    const fetchCourseData = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/api/users')
+        const data = await response.json()
+        
+        if (data.success && data.users) {
+          // Get course breakdown
+          const courseCount: {[key: string]: number} = {}
+          data.users.forEach((user: any) => {
+            if (user.course) {
+              courseCount[user.course] = (courseCount[user.course] || 0) + 1
+            }
+          })
 
-    // Get course breakdown
-    const courseCount: {[key: string]: number} = {}
-    manualUsers.forEach((user: any) => {
-      if (user.course) {
-        courseCount[user.course] = (courseCount[user.course] || 0) + 1
+          const breakdown = Object.entries(courseCount).map(([course, count]) => ({
+            course,
+            count,
+            percentage: data.users.length > 0 ? (count / data.users.length) * 100 : 0
+          }))
+
+          setCourseBreakdown(breakdown)
+        }
+      } catch (error) {
+        console.error('Failed to fetch course data:', error)
       }
-    })
+    }
 
-    const breakdown = Object.entries(courseCount).map(([course, count]) => ({
-      course,
-      count,
-      percentage: manualUsers.length > 0 ? (count / manualUsers.length) * 100 : 0
-    }))
-
-    setCourseBreakdown(breakdown)
+    fetchCourseData()
   }, [])
 
   return (
