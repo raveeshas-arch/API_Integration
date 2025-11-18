@@ -5,21 +5,25 @@ import adminModel from "../models/adminModel.js";
 //register
 export const registerAdmin = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    const existingAdmin = await adminModel.findOne({ email });
-    if (existingAdmin) {
+    const { name, email, password, role } = req.body;
+
+    const existingUser = await adminModel.findOne({ email });
+    if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
-    const newAdmin = new adminModel({
+
+    const newUser = new adminModel({
       name,
       email,
       password: hashedPassword,
+      role: role || "student",  
     });
 
-    await newAdmin.save();
+    await newUser.save();
 
-    res.status(201).json({ message: "Admin registered successfully" });
+    res.status(201).json({ message: "User registered successfully", role: newUser.role });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }
@@ -30,40 +34,42 @@ export const loginAdmin = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const admin = await adminModel.findOne({ email });
-    if (!admin) {
+    const user = await adminModel.findOne({ email });
+    if (!user) {
       return res.status(400).json({ message: "User not registered" });
     }
 
-    const isPasswordValid = await bcrypt.compare(password, admin.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(400).json({ message: "Invalid email or password" });
     }
 
     const token = jwt.sign(
       { 
-        id: admin._id, 
-        email: admin.email,
-        name: admin.name 
+        id: user._id, 
+        email: user.email,
+        name: user.name,
+        role: user.role,  
       },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
-    // Store token in secure HTTP-only cookie
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false, 
+      secure: false,
       sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
     res.status(200).json({
       message: "Login successful",
+      token,
       admin: {
-        id: admin._id,
-        name: admin.name,
-        email: admin.email,
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
       },
     });
   } catch (error) {

@@ -15,6 +15,7 @@ const Login = () => {
     email: '',
     password: ''
   })
+
   const [errors, setErrors] = React.useState<Partial<LoginFormData>>({})
   const [showPassword, setShowPassword] = React.useState(false)
 
@@ -27,6 +28,7 @@ const Login = () => {
     e.preventDefault()
     setErrors({})
 
+    // Validate with Zod
     const result = loginSchema.safeParse(formData)
     if (!result.success) {
       const fieldErrors: Partial<LoginFormData> = {}
@@ -40,12 +42,37 @@ const Login = () => {
 
     try {
       const response = await loginAdmin(formData)
-      localStorage.setItem('token', 'dummy-token')
-      localStorage.setItem('admin', JSON.stringify(response.admin))
-      toast.success(response.message || 'Login successful!')
-      window.location.href = '/'
+
+      // Response expected:
+      // {
+      //   message: "Login successful",
+      //   token: "...",
+      //   admin: { name, email, role: "admin" | "user" }
+      // }
+
+      const { token, admin } = response
+
+      if (!token || !admin?.role) {
+        toast.error("Invalid response from server")
+        return
+      }
+
+      // Save login session
+      localStorage.setItem("token", token)
+      localStorage.setItem("role", admin.role)
+      localStorage.setItem("admin", JSON.stringify(admin))
+
+      toast.success(response.message || "Login successful!")
+
+   
+      if (admin.role === "admin") {
+        window.location.href = "/admin"
+      } else if (admin.role === "student") {
+        window.location.href = "/"
+      }
+
     } catch (error: any) {
-      const errorMessage = error.response?.data?.message || 'Login failed'
+      const errorMessage = error.response?.data?.message || "Login failed"
       toast.error(errorMessage)
     }
   }
@@ -62,6 +89,7 @@ const Login = () => {
         </div>
 
         <div className="space-y-4">
+          {/* Email */}
           <div className="space-y-2 text-left">
             <Label htmlFor="email">Email</Label>
             <div className="relative">
@@ -78,7 +106,8 @@ const Login = () => {
               {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
             </div>
           </div>
-          
+
+          {/* Password */}
           <div className="space-y-2 text-left">
             <Label htmlFor="password">Password</Label>
             <div className="relative">
@@ -92,6 +121,7 @@ const Login = () => {
                 onChange={handleChange}
                 className="pl-10 pr-10"
               />
+
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
@@ -99,15 +129,10 @@ const Login = () => {
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
+
               {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
             </div>
           </div>
-        </div>
-
-        <div className="text-left">
-          <Button variant="link" className="text-indigo-500 p-0 h-auto text-sm">
-            Forget password?
-          </Button>
         </div>
 
         <Button type="submit" className="w-full bg-indigo-500 hover:bg-indigo-600">
@@ -115,13 +140,13 @@ const Login = () => {
         </Button>
 
         <p className="text-gray-500 text-sm">
-          Don't have an account?{' '}
-          <button 
+          Don’t have an account?{" "}
+          <button
             type="button"
-            onClick={() => navigate('/register')} 
+            onClick={() => navigate("/register")}
             className="text-indigo-500 hover:underline"
           >
-            click here
+            Click here
           </button>
         </p>
       </form>

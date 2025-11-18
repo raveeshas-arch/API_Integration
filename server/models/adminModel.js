@@ -19,6 +19,9 @@ const adminSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  role: { type: String, enum: ["admin", "student"], default: "student" },
+}, {
+  timestamps: true,
 });
 
 const adminModel = mongoose.models.admin || mongoose.model("admin", adminSchema);
