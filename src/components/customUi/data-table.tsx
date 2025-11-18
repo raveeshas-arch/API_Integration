@@ -63,7 +63,7 @@ const [rowSelection, setRowSelection] = React.useState({})
     onRowSelectionChange: setRowSelection,
     initialState: {
       pagination: {
-        pageSize: 5,
+        pageSize: 999999,
       },
     },
     state: {
@@ -178,9 +178,7 @@ const [rowSelection, setRowSelection] = React.useState({})
       </Table>
     </div>
 
-      <div className="mt-4">
-        <Pagination table={table} />
-      </div>
+
 
     </div>
   )

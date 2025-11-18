@@ -20,7 +20,7 @@ function App() {
       });
       return res.status === 200;
     } catch (error) {
-      // Silently handle network errors
+      
       return false;
     }
   };
@@ -38,7 +38,7 @@ function App() {
 
   // Interval to detect manual cookie deletion
   useEffect(() => {
-    if (!isAuthenticated) return; // Only check if currently authenticated
+    if (!isAuthenticated) return; 
 
     const interval = setInterval(async () => {
       const valid = await checkAuth();
@@ -46,7 +46,7 @@ function App() {
       if (!valid && isAuthenticated) {
         setIsAuthenticated(false);
       }
-    }, 5000); // every 5 sec
+    }, 5000); 
 
     return () => clearInterval(interval);
   }, [isAuthenticated]);

@@ -28,7 +28,7 @@ export function Pagination<TData>({ table }: PaginationProps<TData>) {
             }}
             className="h-8 w-[70px] rounded border border-input bg-background px-2 py-1 text-sm dark:bg-gray-800"
           >
-            {[5,10, 20, 30, 50, 100].map((pageSize) => (
+            {[10, 20, 30, 50, 100].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 {pageSize}
               </option>
