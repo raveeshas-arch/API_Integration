@@ -2,7 +2,6 @@ import axios from "axios";
 
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 
-// Create axios instance only for admin API with credentials
 const adminAPI = axios.create({
   baseURL: BASE_URL,
   withCredentials: true

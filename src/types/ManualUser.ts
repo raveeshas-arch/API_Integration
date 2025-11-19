@@ -1,6 +1,6 @@
 export type ManualUser = {
   id: number
-  dbId?: string // MongoDB _id
+  dbId?: string 
   fullName: string
   age: number
   email: string

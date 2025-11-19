@@ -8,7 +8,7 @@ router.post("/register", registerAdmin);
 router.post("/login", loginAdmin);
 router.post("/logout", logoutAdmin);
 
-// Protected route to verify JWT token
+// verify JWT token
 router.get("/me", requireAuth, (req, res) => {
   res.json({ 
     user: {
