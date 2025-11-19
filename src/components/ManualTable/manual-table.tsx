@@ -24,10 +24,12 @@ import {
 } from "@/components/ui/alert-dialog"
 import toast from 'react-hot-toast'
 import { useManualUserStore } from '../../stores/manualUserStore'
+import { useAuth } from '../../hooks/useAuth'
 
 
 const ManualTable = () => {
   const { users: manualUsers, addUser, deleteUser, updateUser, clearAll, setUsers } = useManualUserStore()
+  const { isAdmin } = useAuth()
   const [selectedUser, setSelectedUser] = useState<ManualUser | null>(null)
   const [viewDialogOpen, setViewDialogOpen] = useState(false)
 const [currentPage, setCurrentPage] = useState(1)
@@ -94,8 +96,8 @@ useEffect(() => {
   return (
     <div className="p-2 sm:p-4 lg:p-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
-        <Form onAddUser={handleAddUser} />
-        {manualUsers.length > 0 && (
+        {isAdmin && <Form onAddUser={handleAddUser} />}
+        {manualUsers.length > 0 && isAdmin && (
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive">

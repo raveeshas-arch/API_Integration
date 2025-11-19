@@ -9,6 +9,7 @@ import { ManualUser } from "../../types/ManualUser"
 import { ViewUser } from "./ViewUser"
 import { EditUser } from "./EditUser"
 import { DeleteAlert } from "./DeleteAlert"
+import { useAuth } from "../../hooks/useAuth"
 
 const columnDefinitions = [
   { key: "fullName", title: "Full Name" },
@@ -62,13 +63,18 @@ export const createManualColumns = (props?: ManualColumnsProps): ColumnDef<Manua
     header: "Actions",
     cell: ({ row }) => {
       const user = row.original
+      const { isAdmin } = useAuth()
  
       return (
         <TooltipProvider>
           <div className="flex items-center gap-2">
             <ViewUser user={user} onViewUser={props?.onViewUser} />
-            <EditUser user={user} onUpdateUser={props?.onUpdateUser} />
-            <DeleteAlert user={user} onDeleteUser={props?.onDeleteUser} />
+            {isAdmin && (
+              <>
+                <EditUser user={user} onUpdateUser={props?.onUpdateUser} />
+                <DeleteAlert user={user} onDeleteUser={props?.onDeleteUser} />
+              </>
+            )}
           </div>
         </TooltipProvider>
       )
