@@ -43,12 +43,6 @@ const Login = () => {
     try {
       const response = await loginAdmin(formData)
 
-      // Response expected:
-      // {
-      //   message: "Login successful",
-      //   token: "...",
-      //   admin: { name, email, role: "admin" | "user" }
-      // }
 
       const { token, admin } = response
 
@@ -66,7 +60,7 @@ const Login = () => {
 
    
       if (admin.role === "admin") {
-        window.location.href = "/admin"
+        window.location.href = "/"
       } else if (admin.role === "student") {
         window.location.href = "/"
       }
