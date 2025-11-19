@@ -10,7 +10,7 @@ export const requireAuth = async (req, res, next) => {
     
     const payload = jwt.verify(token, process.env.JWT_SECRET);
     
-    // Use data directly from token (no database query needed)
+    
     req.user = {
       id: payload.id,
       email: payload.email,

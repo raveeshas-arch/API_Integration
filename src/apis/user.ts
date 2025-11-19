@@ -3,7 +3,7 @@ import axios from "axios";
 const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
 const EXTERNAL_API = "https://dummyjson.com";
 
-// Create separate axios instances
+// separate axios instances
 const internalAPI = axios.create({
   baseURL: BASE_URL,
   withCredentials: true 
