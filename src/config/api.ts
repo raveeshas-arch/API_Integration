@@ -5,6 +5,7 @@ export const API_ENDPOINTS = {
   BASE_URL: API_BASE_URL,
   USERS: `${API_BASE_URL}/api/users`,
   ADMIN: `${API_BASE_URL}/api/admin`,
+  PRODUCTS: `${API_BASE_URL}/api/products`,
 };
 
 // Fetch with credentials for cookie support

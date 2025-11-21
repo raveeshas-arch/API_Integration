@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router'
 import { ROUTES } from '../../constants'
-import { Home, Users, Database, Settings, LayoutDashboard } from 'lucide-react'
+import { Home, Users, Database, Settings, LayoutDashboard ,ShoppingCart } from 'lucide-react'
 import { Button } from '../ui/button'
 import UserProfile from '../common/UserProfile'
 import { DateTime } from '../common/DateTime'
@@ -16,6 +16,7 @@ const navItems = [
   { path: ROUTES.DASHBOARD, label: 'Home', icon: Home },
   { path: ROUTES.MANUAL, label: 'Manual', icon: Users },
   { path: ROUTES.API, label: 'API ', icon: Database },
+   { path: ROUTES.PRODUCT, label: 'Products ', icon: ShoppingCart },
 ]
 
 const getPageTitle = (pathname: string) => {
@@ -26,6 +27,8 @@ const getPageTitle = (pathname: string) => {
       return { title: 'Manual Users', subtitle: 'Manage and track Students' }
     case ROUTES.API:
       return { title: 'API Products', subtitle: 'Manage API integrated Products' }
+      case ROUTES.PRODUCT:
+      return { title: 'Product Details', subtitle: 'Manage Product Details' }
     case '/account':
       return { title: 'My Account', subtitle: 'Manage your account settings' }
     default:
