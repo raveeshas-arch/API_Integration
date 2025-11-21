@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import router from './routes/adminRoutes.js';
 import authRoutes from './routes/authRoutes.js';
+import productRoutes from './routes/productRoutes.js';
 
 dotenv.config();
 
@@ -65,6 +66,7 @@ const User = mongoose.model('User', userSchema);
 // Routes
 app.use('/api/admin', router);
 app.use('/auth', authRoutes);
+app.use('/api/products', productRoutes);
 
 // Add new user
 app.post('/api/users', async (req, res, next) => {

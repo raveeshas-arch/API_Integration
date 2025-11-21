@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import NotFound from './pages/NotFound';
 import { Layout } from './components/Layout/Navigation';
 import { ThemeProvider } from './contexts/ThemeContext';
+import Product from './pages/Product';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -78,6 +79,7 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/manual" element={<Manual />} />
           <Route path="/api" element={<API />} />
+          <Route path='/products' element={<Product />} />
           <Route path="/login" element={<Navigate to="/" replace />} />
           <Route path="/register" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFound />} />

@@ -79,7 +79,7 @@ interface FormProps {
   onAddUser: (user: ManualUser) => void
 }
 
-const Form = ({ onAddUser }: FormProps) => {
+const ProductForm = ({ onAddUser }: FormProps) => {
   const [open, setOpen] = useState(false)
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -273,4 +273,4 @@ const Form = ({ onAddUser }: FormProps) => {
   )
 }
 
-export default Form
+export default ProductForm
