@@ -1,4 +1,5 @@
-import { Package } from 'lucide-react';
+import { useEffect,useRef } from 'react';
+import { Package, Upload, X } from 'lucide-react';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -60,6 +61,7 @@ interface ProductFormProps {
 
 const ProductForm = ({ onAddProduct }: ProductFormProps) => {
   const [open, setOpen] = useState(false)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -130,7 +132,7 @@ const ProductForm = ({ onAddProduct }: ProductFormProps) => {
           </DialogHeader>
           <FormProvider {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              {formFields.map(({ name, label, type }) => (
+              {formFields.filter(f => f.name !== 'image').map(({ name, label, type }) => (
                 <FormField
                   key={name}
                   control={form.control}
@@ -146,6 +148,82 @@ const ProductForm = ({ onAddProduct }: ProductFormProps) => {
                   )}
                 />
               ))}
+              
+              {/* Image Upload Section */}
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Product Image</FormLabel>
+                    <FormControl>
+                      <div className="space-y-3">
+                        <div className="flex gap-2">
+                          <Input 
+                            type="url" 
+                            placeholder="Enter image URL" 
+                            {...field}
+                            onChange={(e) => {
+                              field.onChange(e)
+                              setImagePreview(e.target.value)
+                            }}
+                          />
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={() => document.getElementById('imageUpload')?.click()}
+                          >
+                            <Upload className="h-4 w-4 mr-2" />
+                            Upload
+                          </Button>
+                        </div>
+                        
+                        <input
+                          id="imageUpload"
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0]
+                            if (file) {
+                              const reader = new FileReader()
+                              reader.onload = (event) => {
+                                const result = event.target?.result as string
+                                field.onChange(result)
+                                setImagePreview(result)
+                              }
+                              reader.readAsDataURL(file)
+                            }
+                          }}
+                        />
+                        
+                        {imagePreview && (
+                          <div className="relative inline-block">
+                            <img 
+                              src={imagePreview} 
+                              alt="Preview" 
+                              className="w-32 h-32 object-cover rounded-lg border"
+                            />
+                            <Button
+                              type="button"
+                              variant="destructive"
+                              size="sm"
+                              className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                              onClick={() => {
+                                field.onChange('')
+                                setImagePreview(null)
+                              }}
+                            >
+                              <X className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        )}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               
               <FormField
                 control={form.control}
