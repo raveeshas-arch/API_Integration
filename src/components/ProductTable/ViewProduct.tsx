@@ -55,34 +55,34 @@ export function ViewProduct({ product, onViewProduct }: ViewProductProps) {
                 <img 
                   src={product.image} 
                   alt={product.productName}
-                  className="w-32 h-32 object-cover rounded-lg"
+                  className="w-100 h-100 object-cover rounded-lg"
                 />
               </div>
             )}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="text-sm font-medium text-gray-500">Product Name</label>
-                <p className="text-sm font-semibold">{product.productName}</p>
+                <label className="text-md font-medium text-gray-500">Product Name</label>
+                <p className="text-md font-semibold">{product.productName}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-500">Category</label>
-                <p className="text-sm">{product.category}</p>
+                <label className="text-md font-medium text-gray-500">Category</label>
+                <p className="text-md">{product.category}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-500">Price</label>
-                <p className="text-sm">${product.price}</p>
+                <label className="text-md font-medium text-gray-500">Price</label>
+                <p className="text-md">Rs{product.price}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-500">Stock</label>
-                <p className="text-sm">{product.stock}</p>
+                <label className="text-md font-medium text-gray-500">Stock</label>
+                <p className="text-md">{product.stock}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-500">Status</label>
-                <p className="text-sm">{product.status}</p>
+                <label className="text-md font-medium text-gray-500">Status</label>
+                <p className="text-md">{product.status}</p>
               </div>
               <div>
-                <label className="text-sm font-medium text-gray-500">Rating</label>
-                <p className="text-sm">{product.rating}/5</p>
+                <label className="text-md font-medium text-gray-500">Rating</label>
+                <p className="text-md">{product.rating}/5</p>
               </div>
             </div>
           </div>

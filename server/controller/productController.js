@@ -21,10 +21,11 @@ const getAllProducts = async (req, res) => {
 // Create new product
 const createProduct = async (req, res) => {
   try {
-    const { productName, category, price, stock, status, rating } = req.body;
+    const { productName, image, category, price, stock, status, rating } = req.body;
     
     const newProduct = new Product({
       productName,
+      image,
       category,
       price,
       stock,
