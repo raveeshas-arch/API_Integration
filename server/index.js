@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import router from './routes/adminRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 
 dotenv.config();
 
@@ -57,6 +58,7 @@ const userSchema = new mongoose.Schema(
     gender: { type: String, enum: ['Male', 'Female', 'Other'], required: true },
     birthDate: { type: String },
     course: { type: String, required: true },
+
   },
   { timestamps: true }
 );
@@ -67,6 +69,7 @@ const User = mongoose.model('User', userSchema);
 app.use('/api/admin', router);
 app.use('/auth', authRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Add new user
 app.post('/api/users', async (req, res, next) => {

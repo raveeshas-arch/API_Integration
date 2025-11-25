@@ -94,15 +94,45 @@ const UserProfile = ({ isAuthenticated = true }: UserProfileProps) => {
     }
   };
 
-  const handleUpdateProfilePic = () => {
-    if (admin && editProfilePic) {
-      const updatedAdmin = { ...admin, profilePic: editProfilePic };
+  const handleUpdateProfilePic = async () => {
+    if (!admin) return;
+    
+    try {
+      let imageUrl = editProfilePic;
+      
+      // If file is selected, upload to S3 first
+      if (selectedFile) {
+        const formData = new FormData();
+        formData.append('profilePicture', selectedFile);
+        formData.append('userId', admin.id);
+        
+        const response = await fetch('http://localhost:3001/api/upload/profile-picture', {
+          method: 'POST',
+          body: formData
+        });
+        
+        const result = await response.json();
+        
+        if (!result.success) {
+          toast.error(result.message || 'Upload failed');
+          return;
+        }
+        
+        imageUrl = result.imageUrl;
+      }
+      
+      // Update local storage and state
+      const updatedAdmin = { ...admin, profilePic: imageUrl };
       localStorage.setItem('admin', JSON.stringify(updatedAdmin));
       setAdmin(updatedAdmin);
-      setProfilePic(editProfilePic || null);
+      setProfilePic(imageUrl || null);
       setIsEditingPic(false);
       setSelectedFile(null);
       toast.success('Profile picture updated successfully!');
+      
+    } catch (error) {
+      console.error('Update error:', error);
+      toast.error('Failed to update profile picture');
     }
   };
 
