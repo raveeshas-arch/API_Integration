@@ -9,6 +9,7 @@ import NotFound from './pages/NotFound';
 import { Layout } from './components/Layout/Navigation';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Product from './pages/Product';
+import ContactForm from './pages/contactFrom';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -80,6 +81,7 @@ function App() {
           <Route path="/manual" element={<Manual />} />
           <Route path="/api" element={<API />} />
           <Route path='/products' element={<Product />} />
+          <Route path='/contact' element={<ContactForm />} />
           <Route path="/login" element={<Navigate to="/" replace />} />
           <Route path="/register" element={<Navigate to="/" replace />} />
           <Route path="*" element={<NotFound />} />

@@ -5,6 +5,7 @@ export const ROUTES = {
   PRODUCT:'/products',
   LOGIN: '/login',
   REGISTER: '/register',
+  CONTACT:'/contact'
 } as const;
 
 // React Query Keys

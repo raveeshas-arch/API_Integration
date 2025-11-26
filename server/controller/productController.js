@@ -1,13 +1,33 @@
 import Product from '../models/Product.js';
 
-// Get all products
+// Get all products with pagination
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const { page = 1, limit = 10, search = '' } = req.query;
+    const skip = (page - 1) * limit;
+    
+    const query = search ? {
+      $or: [
+        { productName: { $regex: search, $options: 'i' } },
+        { category: { $regex: search, $options: 'i' } }
+      ]
+    } : {};
+    
+    const [products, total] = await Promise.all([
+      Product.find(query).skip(skip).limit(Number(limit)),
+      Product.countDocuments(query)
+    ]);
+    
     res.status(200).json({
       success: true,
       message: 'Products fetched successfully',
-      products
+      products,
+      pagination: {
+        currentPage: Number(page),
+        totalPages: Math.ceil(total / limit),
+        totalItems: total,
+        itemsPerPage: Number(limit)
+      }
     });
   } catch (error) {
     res.status(500).json({
