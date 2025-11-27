@@ -100,7 +100,7 @@ const UserProfile = ({ isAuthenticated = true }: UserProfileProps) => {
     try {
       let imageUrl = editProfilePic;
       
-      // If file is selected, upload to S3 first
+      // If file is selected, upload to 
       if (selectedFile) {
         const formData = new FormData();
         formData.append('profilePicture', selectedFile);

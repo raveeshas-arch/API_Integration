@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -7,10 +6,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, User, MessageSquare } from "lucide-react";
 import toast from "react-hot-toast";
+import { sendContactEmails } from "@/utils/emailService";
 
 const ContactForm = () => {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const [status, setStatus] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -18,15 +18,17 @@ const ContactForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
+    
     try {
-      const res = await axios.post("http://localhost:5000/api/contact", formData);
-      toast.success(res.data.message || "Message sent successfully!");
+      await sendContactEmails(formData);
+      toast.success("Message sent successfully!");
       setFormData({ name: "", email: "", message: "" });
-      setStatus("");
-    } catch (err) {
-      const errorMsg = (err as any).response?.data?.error || "Failed to send message";
-      toast.error(errorMsg);
-      setStatus(errorMsg);
+    } catch (error) {
+      console.error("EmailJS Error:", error);
+      toast.error("Failed to send message. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -94,8 +96,12 @@ const ContactForm = () => {
               </div>
             </div>
 
-            <Button type="submit" className="w-full font-bold bg-gray-200 hover:bg-black hover:text-white cursor-pointer text-black">
-              Send Message
+            <Button 
+              type="submit" 
+              disabled={isLoading}
+              className="w-full font-bold bg-gray-200 hover:bg-black hover:text-white cursor-pointer text-black disabled:opacity-50"
+            >
+              {isLoading ? "Sending..." : "Send Message"}
             </Button>
           </form>
         </CardContent>
