@@ -9,12 +9,11 @@ import {
   flexRender,
   getCoreRowModel,
     getFilteredRowModel,
-  getPaginationRowModel,
    getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
 import { SearchBox } from "@/components/ui/SearchBox"
-import { Pagination } from "../ui/pagination"
+import { BackendPagination } from "../ui/backend-pagination"
 import {
   Table,
   TableBody,
@@ -35,11 +34,20 @@ import { ChevronDown } from "lucide-react";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  pagination?: {
+    currentPage: number
+    totalPages: number
+    totalItems: number
+    pageSize: number
+    onPageChange: (page: number) => void
+    onPageSizeChange: (size: number) => void
+  }
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  pagination,
 }: DataTableProps<TData, TValue>) {
     const [sorting, setSorting] = React.useState<SortingState>([])
  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -54,18 +62,12 @@ const [rowSelection, setRowSelection] = React.useState({})
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     onColumnFiltersChange: setColumnFilters,
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
-    initialState: {
-      pagination: {
-        pageSize: 999999,
-      },
-    },
     state: {
       sorting,
       columnFilters,
@@ -178,7 +180,16 @@ const [rowSelection, setRowSelection] = React.useState({})
       </Table>
     </div>
 
-
+    {pagination && (
+      <BackendPagination 
+        currentPage={pagination.currentPage}
+        totalPages={pagination.totalPages}
+        totalItems={pagination.totalItems}
+        pageSize={pagination.pageSize}
+        onPageChange={pagination.onPageChange}
+        onPageSizeChange={pagination.onPageSizeChange}
+      />
+    )}
 
     </div>
   )

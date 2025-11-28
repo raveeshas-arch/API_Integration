@@ -6,12 +6,6 @@ import Form from "./Form"
 import { UserDetailsDialog } from "./UserDetailsDialog"
 import { Button } from "@/components/ui/button"
 import {
-  ChevronLeft,
-  ChevronRight,
-  ChevronsLeft,
-  ChevronsRight,
-} from "lucide-react"
-import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -93,6 +87,15 @@ useEffect(() => {
     fetchUsers(currentPage)
   }
 
+  const handlePageChange = (page: number) => {
+    fetchUsers(page)
+  }
+
+  const handlePageSizeChange = (size: number) => {
+    setLimit(size)
+    fetchUsers(1, size)
+  }
+
   return (
     <div className="p-2 sm:p-4 lg:p-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
@@ -124,78 +127,23 @@ useEffect(() => {
           </AlertDialog>
         )}
       </div>
+      
       <DataTable 
         columns={createManualColumns({ 
           onDeleteUser: handleDeleteUser,
           onViewUser: handleViewUser,
           onUpdateUser: handleUpdateUser
         })} 
-        data={manualUsers} 
+        data={manualUsers}
+        pagination={{
+          currentPage,
+          totalPages,
+          totalItems: totalUsers,
+          pageSize: limit,
+          onPageChange: handlePageChange,
+          onPageSizeChange: handlePageSizeChange
+        }}
       />
-      
-      {/* Server-side Pagination */}
-      <div className="flex items-center justify-between space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          Showing {manualUsers.length} of {totalUsers} users
-        </div>
-        <div className="flex items-center space-x-6">
-          <div className="flex items-center space-x-5">
-            <p className="text-sm font-medium">Rows per page</p>
-            <select
-              value={limit}
-              onChange={(e) => {
-                const newLimit = Number(e.target.value)
-                setLimit(newLimit)
-                fetchUsers(1, newLimit)
-              }}
-              className="h-8 w-[70px] rounded border border-input bg-background px-2 py-1 text-sm dark:bg-gray-800"
-            >
-              <option value={10}>10</option>
-              <option value={20}>20</option>
-              <option value={30}>30</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-            </select>
-          </div>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Button
-            variant="outline"
-            className="h-8 w-8 p-0"
-            onClick={() => fetchUsers(1)}
-            disabled={currentPage === 1 || loading}
-          >
-            <ChevronsLeft className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            className="h-8 w-8 p-0"
-            onClick={() => fetchUsers(currentPage - 1)}
-            disabled={currentPage === 1 || loading}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          <div className="flex w-[100px] items-center justify-center text-sm font-medium">
-            Page {currentPage} of {totalPages}
-          </div>
-          <Button
-            variant="outline"
-            className="h-8 w-8 p-0"
-            onClick={() => fetchUsers(currentPage + 1)}
-            disabled={currentPage === totalPages || loading}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="outline"
-            className="h-8 w-8 p-0"
-            onClick={() => fetchUsers(totalPages)}
-            disabled={currentPage === totalPages || loading}
-          >
-            <ChevronsRight className="h-4 w-4" />
-          </Button>
-        </div>
-      </div>
       
       <UserDetailsDialog 
         user={selectedUser}
