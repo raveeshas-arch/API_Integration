@@ -10,7 +10,7 @@ const adminAPI = axios.create({
 export const registerAdmin = async (adminData: {
   name: string;
   email: string;
-  password: string;
+  // password: string;
 }) => {
   const response = await adminAPI.post("/api/admin/register", adminData);
   return response.data;

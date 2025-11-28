@@ -13,11 +13,11 @@ const Register = () => {
     const [formData, setFormData] = React.useState({
         name: '',
         email: '',
-        password: '',
+        // password: '',
         role: 'student' 
     })
 
-    const [showPassword, setShowPassword] = React.useState(false)
+    // const [showPassword, setShowPassword] = React.useState(false)
 
     // Handle input change
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -29,7 +29,7 @@ const Register = () => {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
-        if (!formData.name || !formData.email || !formData.password) {
+        if (!formData.name || !formData.email ) {
             toast.error('Please fill all required fields')
             return
         }
@@ -84,30 +84,7 @@ const Register = () => {
                         />
                     </div>
 
-                    {/* Password */}
-                    <div className="space-y-2 text-left">
-                        <Label htmlFor="password">Password</Label>
-                        <div className="relative">
-                            <Input
-                                id="password"
-                                name="password"
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Enter your password"
-                                value={formData.password}
-                                onChange={handleChange}
-                                className="pr-10"
-                                required
-                            />
-
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                            >
-                                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                            </button>
-                        </div>
-                    </div>
+        
 
                     {/* Role Select */}
                     <div className="space-y-2 text-left">
