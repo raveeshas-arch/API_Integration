@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 import { registerAdmin } from '@/apis/admin'
-import { Eye, EyeOff } from 'lucide-react'
+
 
 const Register = () => {
     const navigate = useNavigate()
@@ -13,11 +13,9 @@ const Register = () => {
     const [formData, setFormData] = React.useState({
         name: '',
         email: '',
-        // password: '',
         role: 'student' 
     })
 
-    // const [showPassword, setShowPassword] = React.useState(false)
 
     // Handle input change
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {

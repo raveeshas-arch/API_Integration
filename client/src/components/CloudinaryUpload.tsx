@@ -7,8 +7,8 @@ interface CloudinaryUploadProps {
   onChange: (url: string) => void;
 }
 
-const CLOUDINARY_NAME = "digi9kmls"
-const UPLOAD_PRESET = "API_INTEGRATION"
+const CLOUDINARY_NAME = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME 
+const UPLOAD_PRESET = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET
 
 export default function CloudinaryUpload({ value, onChange }: CloudinaryUploadProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);

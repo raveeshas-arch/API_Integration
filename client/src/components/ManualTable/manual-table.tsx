@@ -22,7 +22,7 @@ import { useAuth } from '../../hooks/useAuth'
 
 
 const ManualTable = () => {
-  const { users: manualUsers, addUser, deleteUser, updateUser, clearAll, setUsers } = useManualUserStore()
+  const { users: manualUsers,  deleteUser, updateUser, clearAll, setUsers } = useManualUserStore()
   const { isAdmin } = useAuth()
   const [selectedUser, setSelectedUser] = useState<ManualUser | null>(null)
   const [viewDialogOpen, setViewDialogOpen] = useState(false)

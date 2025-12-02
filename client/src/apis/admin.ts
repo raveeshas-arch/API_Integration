@@ -7,10 +7,11 @@ const adminAPI = axios.create({
   withCredentials: true
 });
 
+// Send registration request to backend
 export const registerAdmin = async (adminData: {
   name: string;
   email: string;
-  // password: string;
+  
 }) => {
   const response = await adminAPI.post("/api/admin/register", adminData);
   return response.data;

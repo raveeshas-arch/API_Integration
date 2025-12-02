@@ -9,42 +9,57 @@ const internalAPI = axios.create({
   withCredentials: true 
 });
 
+// External API instance (dummyjson)
 const externalAPI = axios.create({
   baseURL: EXTERNAL_API,
   withCredentials: false 
 });
 
-export const fetchUsers = async () => {
-  const response = await internalAPI.get("/api/users");
-  return response.data;
-};
-
-
-export const addUser = async (userData: any) => {
-  const response = await internalAPI.post("/api/users", userData);
-  return response.data;
-};
-
-export const updateUser = async (id: string, userData: any) => {
-  const response = await internalAPI.put(`/api/users/${id}`, userData);
-  return response.data;
-};
-
-export const deleteUser = async (id: string) => {
-  const response = await internalAPI.delete(`/api/users/${id}`);
-  return response.data;
-};
-
+//Fetch limited product list
 export const fetchProductsList = async () => {
   await new Promise(resolve => setTimeout(resolve, 900));
   const response = await externalAPI.get("/products");
   return response.data.products;
 };
 
+// Fetch all products from external API
 export const fetchProducts = async () => {
   const response = await externalAPI.get("/products");
   return response.data;
 };
+
+
+
+
+
+
+
+
+// GET all users from backend
+export const fetchUsers = async () => {
+  const response = await internalAPI.get("/api/users");
+  return response.data;
+};
+
+// Add a new user to the backend
+export const addUser = async (userData: any) => {
+  const response = await internalAPI.post("/api/users", userData);
+  return response.data;
+};
+//update user from backnd
+export const updateUser = async (id: string, userData: any) => {
+  const response = await internalAPI.put(`/api/users/${id}`, userData);
+  return response.data;
+};
+
+//delete user from backend
+export const deleteUser = async (id: string) => {
+  const response = await internalAPI.delete(`/api/users/${id}`);
+  return response.data;
+};
+
+
+
 
 export const fetchProductsCount = async () => {
 
@@ -53,8 +68,6 @@ export const fetchProductsCount = async () => {
   return response.data.total || 0;
 
 };
-
-
 
 export const fetchProductCategoriesCount = async () => {
 
