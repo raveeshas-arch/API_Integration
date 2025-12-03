@@ -6,22 +6,23 @@ import {
   deleteProduct,
   getProduct
 } from '../controller/productController.js';
+import { requireAuth } from '../middleware/auth.js';
 
 const router = express.Router();
 
 // GET /api/products - Get all products
-router.get('/', getAllProducts);
+router.get('/',  requireAuth, getAllProducts);
 
 // POST /api/products - Create new product
-router.post('/', createProduct);
+router.post('/', requireAuth, createProduct);
 
 // GET /api/products/:id - Get single product
-router.get('/:id', getProduct);
+router.get('/:id', requireAuth, getProduct);
 
 // PUT /api/products/:id - Update product
-router.put('/:id', updateProduct);
+router.put('/:id', requireAuth, updateProduct);
 
 // DELETE /api/products/:id - Delete product
-router.delete('/:id', deleteProduct);
+router.delete('/:id', requireAuth, deleteProduct);
 
 export default router;

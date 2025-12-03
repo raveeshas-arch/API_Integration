@@ -7,6 +7,7 @@ import authRoutes from './routes/authRoutes.js';
 import productRoutes from './routes/productRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import config from './config/config.js';
+import { requireAuth } from './middleware/auth.js';
 
 const app = express();
 const PORT = config.app.port;
@@ -100,7 +101,7 @@ app.post('/api/users', async (req, res, next) => {
 });
 
 // Get all users
-app.get('/api/users', async (req, res, next) => {
+app.get('/api/users' ,requireAuth, async (req, res, next) => {
   try {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
@@ -131,7 +132,7 @@ app.get('/api/users', async (req, res, next) => {
 });
 
 // Update user by ID
-app.put('/api/users/:id', async (req, res, next) => {
+app.put('/api/users/:id',requireAuth, async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ 
@@ -158,7 +159,7 @@ app.put('/api/users/:id', async (req, res, next) => {
 });
 
 // Delete user by ID
-app.delete('/api/users/:id', async (req, res, next) => {
+app.delete('/api/users/:id', requireAuth, async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ 
