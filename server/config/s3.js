@@ -1,15 +1,13 @@
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import multer from 'multer';
-import dotenv from 'dotenv';
-
-dotenv.config();
+import config from './config.js';
 
 // Configure AWS SDK v3
 const s3Client = new S3Client({
-  region: process.env.AWS_REGION,
+  region: config.aws.region,
   credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY,
-    secretAccessKey: process.env.AWS_SECRET_KEY,
+    accessKeyId: config.aws.accessKeyId,
+    secretAccessKey: config.aws.secretAccessKey,
   },
 });
 
@@ -33,7 +31,7 @@ export const uploadToS3 = async (file, folder = 'profile-pictures') => {
     const key = `${folder}/${Date.now()}-${file.originalname}`;
     
     const command = new PutObjectCommand({
-      Bucket: process.env.AWS_BUCKET_NAME,
+      Bucket: config.aws.s3Bucket,
       Key: key,
       Body: file.buffer,
       ContentType: file.mimetype,
@@ -41,7 +39,7 @@ export const uploadToS3 = async (file, folder = 'profile-pictures') => {
     });
 
     await s3Client.send(command);
-    const imageUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`;
+    const imageUrl = `https://${config.aws.s3Bucket}.s3.${config.aws.region}.amazonaws.com/${key}`;
     return imageUrl;
   } catch (error) {
     console.error('S3 upload error:', error);

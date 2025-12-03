@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import adminModel from "../models/adminModel.js";
-import transporter from "../config/nodemailer.js";
 import { generateRandomPassword } from "../utils/passwordGenerator.js";
+import { sendRegistrationEmail } from "../utils/emailService.js";
 
 //register
 export const registerAdmin = async (req, res) => {
@@ -30,16 +30,11 @@ export const registerAdmin = async (req, res) => {
 
     await newUser.save();
 
-    try {
-      await transporter.sendMail({
-        from: process.env.SENDER_EMAIL,
-        to: email,
-        subject: "Welcome! Your Account Password",
-        html: `<p>Welcome ${name}!</p><p>Your account has been created. Your login password is: <strong>${generatedPassword}</strong></p>`
-      });
+    const emailResult = await sendRegistrationEmail(email, name, generatedPassword);
+    
+    if (emailResult.success) {
       res.status(201).json({ message: "User registered successfully! Password sent to your email." });
-    } catch (emailError) {
-      console.error('Email sending failed:', emailError);
+    } else {
       res.status(201).json({ 
         message: "User registered successfully! However, email sending failed. Please contact admin for your password."
       });
@@ -99,32 +94,31 @@ export const loginAdmin = async (req, res) => {
 };
 
 // Send password via email
-export const sendPasswordEmail = async (req, res) => {
-  try {
-    const { email } = req.body;
+// export const sendPasswordController = async (req, res) => {
+//   try {
+//     const { email } = req.body;
 
-    const user = await adminModel.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: "User not registered" });
-    }
+//     const user = await adminModel.findOne({ email });
+//     if (!user) {
+//       return res.status(400).json({ message: "User not registered" });
+//     }
 
-    const newPassword = generateRandomPassword();
-    const hashedPassword = await bcrypt.hash(newPassword, 10);
+//     const newPassword = generateRandomPassword();
+//     const hashedPassword = await bcrypt.hash(newPassword, 10);
     
-    await adminModel.findByIdAndUpdate(user._id, { password: hashedPassword });
+//     await adminModel.findByIdAndUpdate(user._id, { password: hashedPassword });
 
-    await transporter.sendMail({
-      from: process.env.SENDER_EMAIL,
-      to: email,
-      subject: "Your Login Password",
-      html: `<p>Your login password is: <strong>${newPassword}</strong></p>`
-    });
-
-    res.status(200).json({ message: "Password sent to your email" });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
-};
+//     const emailResult = await sendPasswordEmail(email, newPassword);
+    
+//     if (emailResult.success) {
+//       res.status(200).json({ message: "Password sent to your email" });
+//     } else {
+//       res.status(500).json({ message: "Password updated but email sending failed" });
+//     }
+//   } catch (error) {
+//     res.status(500).json({ message: "Server error", error: error.message });
+//   }
+// };
 
 //admin logout
 export const logoutAdmin = async (req, res) => {
